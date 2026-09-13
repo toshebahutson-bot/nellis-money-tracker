@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#7d3fa1">
+<link rel="manifest" href="manifest.json">
+<title>Nelli's Budget 💜</title>
+<style>
+:root{--p:#7d3fa1;--p2:#b76bd4;--bg:#faf7fc;--card:#fff;--ink:#29202e;--muted:#766b7c;--good:#29965e;--bad:#d34d70;--line:#eee5f1}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f5eafb,#fff 55%);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+.app{max-width:760px;margin:auto;padding:16px 13px 45px}.top{display:flex;justify-content:space-between;align-items:center}.brand{font-size:25px;font-weight:850;color:var(--p)}.sub{font-size:12px;color:var(--muted);margin-top:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:21px;padding:16px;margin:12px 0;box-shadow:0 7px 22px rgba(77,40,90,.07)}
+select,input{font:inherit;width:100%;padding:12px;border:1px solid #e3d8e8;border-radius:12px;background:#fff;color:var(--ink)}
+.months{display:grid;grid-template-columns:1fr 1fr;gap:9px}.label{font-size:11px;color:var(--muted);display:block;margin-bottom:5px}
+.balance{text-align:center}.small{font-size:12px;color:var(--muted)}.big{font-size:36px;font-weight:900;color:var(--p);margin:3px 0 12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#faf7fc;border-radius:14px;padding:10px}.stat b{display:block;font-size:16px}.stat span{font-size:10px;color:var(--muted)}
+h2{font-size:17px;margin:0 0 12px}.piebox{display:grid;place-items:center}.pie{width:min(300px,75vw);aspect-ratio:1;border-radius:50%;position:relative}.hole{position:absolute;inset:27%;background:#fff;border-radius:50%;display:grid;place-items:center;text-align:center;font-weight:850;color:var(--p);box-shadow:0 0 0 1px #f0e6f3}.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.leg{font-size:12px;display:flex;gap:7px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.tab{background:#f0e8f4;color:#684879}.tab.active{background:var(--p);color:#fff}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:9px}.full{grid-column:1/-1}button{border:0;border-radius:12px;padding:12px;font:inherit;font-weight:800}.spend{background:#fdeaf0;color:#a72d4e}.receive{background:#e8f8ee;color:#216f47}.save{background:var(--p);color:white}.secondary{background:#f0e8f4;color:#684879}.danger{background:#fbecef;color:#a72d4e}
+.tx{display:flex;justify-content:space-between;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}.tx:last-child{border-bottom:0}.txname{font-weight:750}.meta{font-size:11px;color:var(--muted);margin-top:2px}.plus{color:var(--good);font-weight:850}.minus{color:var(--bad);font-weight:850}
+.category-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}.category-row:last-child{border-bottom:0}.note{font-size:11px;line-height:1.45;color:var(--muted)}
+.hidden{display:none}.history{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.history:last-child{border:0}
+@media(max-width:440px){.form{grid-template-columns:1fr}.full{grid-column:auto}.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}}
+</style>
+</head>
+<body><div class="app">
+<div class="top"><div><div class="brand">💜 Nelli's Budget</div><div class="sub">Your money, your way.</div></div><div>✨</div></div>
+
+<div class="card">
+ <div class="months">
+  <div><span class="label">Month</span><select id="month"></select></div>
+  <div><span class="label">Year</span><select id="year"></select></div>
+ </div>
+</div>
+
+<div class="card balance">
+ <div class="small">MONEY LEFT</div><div class="big" id="balance">$0</div>
+ <div class="stats">
+  <div class="stat"><b id="income">$0</b><span>Money in</span></div>
+  <div class="stat"><b id="bills">$0</b><span>Recurring bills</span></div>
+  <div class="stat"><b id="out">$0</b><span>Money out</span></div>
+ </div>
+</div>
+
+<div class="card">
+ <h2>🥧 Where your money is going</h2>
+ <div class="piebox"><div class="pie" id="pie"><div class="hole"><div><div id="pieTotal">$0</div><span class="small">spent</span></div></div></div></div>
+ <div class="legend" id="legend"></div>
+</div>
+
+<div class="card">
+ <div class="tabs"><button id="spendTab" class="tab active" onclick="setMode('spend')">➖ Spend</button><button id="receiveTab" class="tab" onclick="setMode('receive')">➕ Receive</button></div>
+ <div style="height:10px"></div>
+ <div class="form">
+  <input id="desc" class="full" placeholder="What is it? e.g. Taxi, Food, Shopping">
+  <input id="amount" type="number" min="0" step="1" placeholder="Amount (GYD)">
+  <select id="category"><option>Food</option><option>Transportation</option><option>Savings</option><option>Shopping</option><option>Beauty</option><option>Entertainment</option><option>Other</option></select>
+  <button id="actionBtn" class="spend full" onclick="addEntry()">➖ Record spending</button>
+ </div>
+</div>
+
+<div class="card"><h2>📊 This month</h2><div id="cats"></div></div>
+
+<div class="card"><h2>🧾 Activity</h2><div id="txlist"></div></div>
+
+<div class="card"><h2>💰 Monthly setup</h2>
+ <div class="form"><div><span class="label">Salary</span><input id="salary" type="number"></div><div><span class="label">Recurring bills</span><input id="recurring" type="number"></div></div>
+ <button class="save full" style="margin-top:9px" onclick="saveSetup()">Save monthly setup</button>
+ <p class="note">Your current default is GYD $133,135 salary and GYD $80,720 recurring expenses. You can change them anytime.</p>
+</div>
+
+<div class="card"><h2>📅 Monthly history</h2><div id="history"></div><p class="note">Each month is kept separately on this device/browser.</p></div>
+
+<div class="card"><button class="danger" style="width:100%" onclick="resetMonth()">Reset this month</button></div>
+</div>
+<script>
+const KEY='nelli-budget-v2',months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const colors={Food:'#e67e22',Transportation:'#3498db',Savings:'#8e44ad',Shopping:'#e84393',Beauty:'#27ae60',Entertainment:'#f1c40f',Other:'#95a5a6'};
+const cats=Object.keys(colors);let db=JSON.parse(localStorage.getItem(KEY)||'{}'), mode='spend',now=new Date(),m=now.getMonth(),y=now.getFullYear();
+function k(){return y+'-'+String(m+1).padStart(2,'0')}
+function d(){if(!db[k()])db[k()]={salary:133135,recurring:80720,tx:[]};return db[k()]}
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function fmt(n){return new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(Math.round(n))}
+function init(){month.innerHTML=months.map((x,i)=>`<option value="${i}">${x}</option>`).join('');year.innerHTML=Array.from({length:11},(_,i)=>2025+i).map(x=>`<option>${x}</option>`).join('');month.value=m;year.value=y;month.onchange=()=>{m=+month.value;render()};year.onchange=()=>{y=+year.value;render()};render()}
+function setMode(x){mode=x;spendTab.className='tab '+(x==='spend'?'active':'');receiveTab.className='tab '+(x==='receive'?'active':'');actionBtn.className=x==='spend'?'spend full':'receive full';actionBtn.textContent=x==='spend'?'➖ Record spending':'➕ Add money received'}
+function addEntry(){let descv=desc.value.trim(),a=Number(amount.value),c=category.value;if(!descv||!a||a<0)return alert('Enter a description and amount.');d().tx.push({id:Date.now(),desc:descv,amount:mode==='spend'?-a:a,cat:c});save();desc.value='';amount.value='';render()}
+function del(id){d().tx=d().tx.filter(x=>x.id!==id);save();render()}
+function saveSetup(){d().salary=Math.max(0,Number(salary.value));d().recurring=Math.max(0,Number(recurring.value));save();render()}
+function resetMonth(){if(confirm('Reset all entries for '+months[m]+' '+y+'?')){delete db[k()];save();render()}}
+function render(){let z=d();salary.value=z.salary;recurring.value=z.recurring;let received=z.tx.filter(x=>x.amount>0).reduce((a,x)=>a+x.amount,0),spent=z.tx.filter(x=>x.amount<0).reduce((a,x)=>a-x.amount,0),bal=z.salary+received-z.recurring-spent;
+balance.textContent='$'+fmt(bal);income.textContent='$'+fmt(z.salary+received);bills.textContent='$'+fmt(z.recurring);out.textContent='$'+fmt(spent);pieTotal.textContent='$'+fmt(spent);
+let sums={};cats.forEach(c=>sums[c]=0);z.tx.filter(x=>x.amount<0).forEach(x=>sums[x.cat]+=(-x.amount));let total=spent,acc=0,stops=[];cats.forEach(c=>{let p=total?sums[c]/total*100:0;stops.push(colors[c]+' '+acc+'% '+(acc+p)+'%');acc+=p});pie.style.background=total?'conic-gradient('+stops.join(',')+')':'#eadff0';
+legend.innerHTML=cats.filter(c=>sums[c]).map(c=>`<div class="leg"><i class="dot" style="background:${colors[c]}"></i>${c}: $${fmt(sums[c])}</div>`).join('')||'<span class="note">No spending recorded yet.</span>';
+cats.innerHTML=cats.map(c=>`<div class="category-row"><span>${c}</span><b>$${fmt(sums[c])}</b></div>`).join('');
+txlist.innerHTML=z.tx.length?z.tx.slice().reverse().map(x=>`<div class="tx"><div><div class="txname">${esc(x.desc)}</div><div class="meta">${x.cat}</div></div><div><span class="${x.amount>0?'plus':'minus'}">${x.amount>0?'+':'−'}$${fmt(Math.abs(x.amount))}</span> <button class="secondary" style="padding:4px 8px" onclick="del(${x.id})">×</button></div></div>`).join(''):'<span class="note">No activity recorded this month.</span>';
+let keys=Object.keys(db).sort().reverse();history.innerHTML=keys.length?keys.map(key=>{let q=db[key],sp=q.tx.filter(x=>x.amount<0).reduce((a,x)=>a-x.amount,0),inc=q.tx.filter(x=>x.amount>0).reduce((a,x)=>a+x.amount,0),left=q.salary+inc-q.recurring-sp;let [yy,mm]=key.split('-');return `<div class="history"><span><b>${months[+mm-1]} ${yy}</b><br><span class="meta">Spent $${fmt(sp)}</span></span><b style="color:${left>=0?'var(--good)':'var(--bad)'}">$${fmt(left)} left</b></div>`}).join(''):'<span class="note">Your saved months will appear here.</span>'}
+function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+init()
+</script>
+</body></html>
