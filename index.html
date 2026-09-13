@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#8e44ad">
+<title>Nelli's Money Tracker</title>
+<style>
+:root{--purple:#8e44ad;--purple2:#b66ad2;--bg:#faf7fc;--card:#fff;--text:#29212e;--muted:#776c7e;--green:#2e9b63;--red:#d94f70}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#f6eefe,#fff);color:var(--text)}
+.app{max-width:720px;margin:auto;padding:18px 14px 40px}
+header{padding:8px 4px 14px}.brand{font-size:27px;font-weight:800;color:var(--purple)}.sub{color:var(--muted);font-size:14px}
+select,input,button{font:inherit}select,input{width:100%;padding:12px;border:1px solid #e4dbe8;border-radius:12px;background:#fff}
+.card{background:var(--card);border:1px solid #eee5f1;border-radius:20px;padding:16px;margin:12px 0;box-shadow:0 5px 18px rgba(77,40,90,.07)}
+.monthrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.monthrow label{font-size:12px;color:var(--muted)}
+.balance{text-align:center}.balance .label{color:var(--muted);font-size:13px}.balance .amount{font-size:34px;font-weight:850;color:var(--purple);margin:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#faf7fc;border-radius:14px;padding:11px;text-align:center}.stat b{display:block;font-size:16px}.stat span{font-size:11px;color:var(--muted)}
+.chartwrap{display:grid;place-items:center;padding:8px}.pie{width:min(310px,75vw);aspect-ratio:1;border-radius:50%;background:conic-gradient(#8e44ad 0 40%,#e67e22 40% 55%,#3498db 55% 70%,#e84393 70% 80%,#27ae60 80% 90%,#f1c40f 90% 100%);position:relative}
+.pie:after{content:"";position:absolute;inset:27%;background:white;border-radius:50%}.center{position:absolute;z-index:2;inset:0;display:grid;place-items:center;font-weight:800;color:var(--purple)}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.leg{display:flex;align-items:center;gap:7px;font-size:12px}.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+h2{font-size:17px;margin:0 0 12px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.full{grid-column:1/-1}
+button{border:0;border-radius:12px;padding:12px 14px;font-weight:750;cursor:pointer}.add{background:var(--purple);color:white;width:100%}.income{background:#e9f8ef;color:#227247}.expense{background:#fdebf0;color:#a62e4d}
+.tx{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #eee}.tx:last-child{border-bottom:0}.txname{font-weight:700}.txmeta{font-size:11px;color:var(--muted);margin-top:2px}.plus{color:var(--green);font-weight:800}.minus{color:var(--red);font-weight:800}
+.row{display:flex;gap:8px}.row button{flex:1}.danger{background:#f8edf2;color:#9b3150}.secondary{background:#f0eaf4;color:#5d4569}
+.note{font-size:12px;color:var(--muted);line-height:1.45}
+@media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}.formgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="brand">💜 Nelli's Money Tracker</div><div class="sub">Your money • your categories • your monthly history</div></header>
+
+<div class="card">
+  <div class="monthrow">
+    <label>Month<select id="month"></select></label>
+    <label>Year<select id="year"></select></label>
+  </div>
+</div>
+
+<div class="card balance">
+  <div class="label">MONEY LEFT THIS MONTH</div>
+  <div class="amount" id="balance">$0</div>
+  <div class="stats">
+    <div class="stat"><b id="income">$0</b><span>Income</span></div>
+    <div class="stat"><b id="bills">$0</b><span>Recurring bills</span></div>
+    <div class="stat"><b id="spent">$0</b><span>Other spending</span></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>💜 Where your money went</h2>
+  <div class="chartwrap"><div class="pie" id="pie"><div class="center" id="pieCenter">$0</div></div></div>
+  <div class="legend" id="legend"></div>
+</div>
+
+<div class="card">
+  <h2>➕ Add money or ➖ spend money</h2>
+  <div class="formgrid">
+    <input id="desc" class="full" placeholder="What was it? e.g. Taxi, Food, Salary">
+    <input id="amount" type="number" min="0" step="1" placeholder="Amount (GYD)">
+    <select id="category">
+      <option>Food</option><option>Transportation</option><option>Savings</option><option>Shopping</option>
+      <option>Beauty</option><option>Entertainment</option><option>Other</option>
+    </select>
+    <button class="expense" onclick="addTx(-1)">➖ Money spent</button>
+    <button class="income" onclick="addTx(1)">➕ Extra money received</button>
+  </div>
+  <p class="note">Recurring bills are already included separately. Use this section for savings, taxi, food, shopping, extra income, and anything else.</p>
+</div>
+
+<div class="card">
+  <h2>📌 Monthly activity</h2>
+  <div id="txlist"></div>
+</div>
+
+<div class="card">
+  <h2>⚙️ Monthly setup</h2>
+  <div class="formgrid">
+    <input id="salary" type="number" min="0" placeholder="Monthly salary">
+    <input id="recurring" type="number" min="0" placeholder="Recurring bills">
+  </div>
+  <div class="row" style="margin-top:9px">
+    <button class="secondary" onclick="saveSetup()">Save setup</button>
+    <button class="danger" onclick="resetMonth()">Reset this month</button>
+  </div>
+  <p class="note">Defaulted for you to GYD $133,135 salary and GYD $80,720 recurring bills.</p>
+</div>
+</div>
+
+<script>
+const KEY='nelli-money-tracker-v1';
+const colors={Food:'#e67e22',Transportation:'#3498db',Savings:'#8e44ad',Shopping:'#e84393',Beauty:'#27ae60',Entertainment:'#f1c40f',Other:'#95a5a6'};
+const cats=Object.keys(colors);
+const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+let db=JSON.parse(localStorage.getItem(KEY)||'{}');
+let now=new Date(), currentMonth=now.getMonth(), currentYear=now.getFullYear();
+function key(){return currentYear+'-'+String(currentMonth+1).padStart(2,'0')}
+function data(){if(!db[key()])db[key()]={salary:133135,recurring:80720,tx:[]};return db[key()]}
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function money(n){return new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(Math.round(n))}
+function init(){
+  month.innerHTML=months.map((m,i)=>`<option value="${i}">${m}</option>`).join('');
+  let ys=[];for(let y=2025;y<=2035;y++)ys.push(y);
+  year.innerHTML=ys.map(y=>`<option>${y}</option>`).join('');
+  month.value=currentMonth;year.value=currentYear;
+  month.onchange=()=>{currentMonth=+month.value;render()};
+  year.onchange=()=>{currentYear=+year.value;render()};
+  render();
+}
+function addTx(sign){
+  let d=desc.value.trim(), a=Number(amount.value), c=category.value;
+  if(!d||!a||a<0)return alert('Please enter a description and amount.');
+  data().tx.push({id:Date.now(),d,a:a*sign,c});
+  save();desc.value='';amount.value='';render();
+}
+function deleteTx(id){data().tx=data().tx.filter(x=>x.id!==id);save();render()}
+function saveSetup(){
+  let s=Number(salary.value),r=Number(recurring.value);
+  if(s>=0)data().salary=s;if(r>=0)data().recurring=r;save();render();
+}
+function resetMonth(){
+  if(confirm('Reset all entries for '+months[currentMonth]+' '+currentYear+'?')){delete db[key()];save();render()}
+}
+function render(){
+  let d=data();salary.value=d.salary;recurring.value=d.recurring;
+  let extra=d.tx.filter(x=>x.a>0).reduce((s,x)=>s+x.a,0);
+  let spent=d.tx.filter(x=>x.a<0).reduce((s,x)=>s-x.a,0);
+  let bal=d.salary+extra-d.recurring-spent;
+  balance.textContent='$'+money(bal);income.textContent='$'+money(d.salary+extra);bills.textContent='$'+money(d.recurring);spent.textContent='$'+money(spent);
+  let sums={};cats.forEach(c=>sums[c]=0);d.tx.filter(x=>x.a<0).forEach(x=>sums[x.c]+=(-x.a));
+  let total=Object.values(sums).reduce((a,b)=>a+b,0);
+  let stops=[],acc=0;
+  cats.forEach(c=>{let pct=total?sums[c]/total*100:0;stops.push(`${colors[c]} ${acc}% ${acc+pct}%`);acc+=pct});
+  pie.style.background=total?`conic-gradient(${stops.join(',')})`:'#eadff0';pieCenter.textContent='$'+money(total);
+  legend.innerHTML=cats.filter(c=>sums[c]>0).map(c=>`<div class="leg"><span class="dot" style="background:${colors[c]}"></span>${c}: $${money(sums[c])}</div>`).join('')||'<div class="note">No spending recorded yet.</div>';
+  txlist.innerHTML=d.tx.length?d.tx.slice().reverse().map(x=>`<div class="tx"><div><div class="txname">${esc(x.d)}</div><div class="txmeta">${x.c}</div></div><div><span class="${x.a>0?'plus':'minus'}">${x.a>0?'+':'−'}$${money(Math.abs(x.a))}</span> <button class="secondary" style="padding:5px 8px;margin-left:5px" onclick="deleteTx(${x.id})">×</button></div></div>`).join(''):'<div class="note">Nothing recorded for this month yet.</div>';
+}
+function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+init();
+</script>
+</body>
+</html>
