@@ -46,6 +46,18 @@
 <div class="card"><h2>🧾 Activity</h2><div id="activity"></div></div>
 <div class="card"><h2>📅 Compare Months</h2><div class="grid"><div><span class="label">Compare month</span><select id="cm"></select></div><div><span class="label">Compare year</span><select id="cy"></select></div></div><div id="compare" style="margin-top:10px"></div></div>
 <div class="card"><h2>🗓️ Saved Month History</h2><div id="history"></div></div>
+
+<div class="card" id="backupRestoreCard">
+  <h2>☁️ Backup &amp; Restore</h2>
+  <p class="note">Protect your N•O•H data before clearing browser data or changing phones. Save exported backups privately in iCloud Drive.</p>
+  <div class="grid">
+    <button class="primary" onclick="exportBackup()">⬇️ Export Backup</button>
+    <button class="soft" onclick="document.getElementById('restoreFile').click()">⬆️ Restore Backup</button>
+  </div>
+  <input id="restoreFile" type="file" accept=".json,application/json" style="display:none" onchange="restoreBackup(event)">
+  <p class="note" id="backupStatus" style="margin-top:10px">Last backup: Never on this browser</p>
+</div>
+
 <div class="card"><button class="danger" style="width:100%" onclick="resetMonth()">Reset this month</button></div>
 </div>
 
