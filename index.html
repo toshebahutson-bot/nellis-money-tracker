@@ -89,5 +89,59 @@ function renderCompare(){let a=totals(cur()),b=totals(monthData(cy0,cm0));compar
 function renderHistory(){let ks=Object.keys(db).sort().reverse();history.innerHTML=ks.map(k=>{let [yy,mm]=k.split('-').map(Number),t=totals(db[k]);return`<div class="row"><div><b>${months[mm-1]} ${yy}</b><div class="meta">In $${fmt(t.in)} · Out $${fmt(t.out)} · Saved $${fmt(t.saved)}</div></div><b class="${t.left>=0?'plus':'minus'}">$${fmt(t.left)} left</b></div>`}).join('')||'<span class="note">Saved months appear here.</span>'}
 function init(){category.innerHTML=cats.map(x=>`<option>${x}</option>`).join('');category.onchange=updateSubs;updateSubs();month.innerHTML=months.map((x,i)=>`<option value="${i}">${x}</option>`).join('');year.innerHTML=Array.from({length:15},(_,i)=>2024+i).map(x=>`<option>${x}</option>`).join('');cm.innerHTML=months.map((x,i)=>`<option value="${i}">${x}</option>`).join('');cy.innerHTML=Array.from({length:15},(_,i)=>2024+i).map(x=>`<option>${x}</option>`).join('');month.value=m;year.value=y;cm.value=cm0;cy.value=cy0;month.onchange=()=>{m=+month.value;render()};year.onchange=()=>{y=+year.value;render()};cm.onchange=()=>{cm0=+cm.value;renderCompare()};cy.onchange=()=>{cy0=+cy.value;renderCompare()};render()}
 init();
+
+function backupStamp(){
+  try{return localStorage.getItem('noh-budget-last-backup')||''}catch(e){return ''}
+}
+function showBackupStamp(){
+  const el=document.getElementById('backupStatus'); if(!el)return;
+  const s=backupStamp();
+  el.textContent=s?'Last backup: '+new Date(s).toLocaleString():'Last backup: Never on this browser';
+}
+function exportBackup(){
+  try{
+    const raw=localStorage.getItem('noh-budget-data-v3');
+    if(!raw){alert('There is no N•O•H budget data to back up yet.');return}
+    const parsed=JSON.parse(raw);
+    const payload={
+      app:'N•O•H Budget Tracker',
+      backupFormat:1,
+      createdAt:new Date().toISOString(),
+      storageKey:'noh-budget-data-v3',
+      data:parsed
+    };
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    const a=document.createElement('a');
+    const d=new Date(), pad=n=>String(n).padStart(2,'0');
+    const filename=`NOH_Budget_Backup_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}.json`;
+    a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);
+    const stamp=new Date().toISOString();
+    localStorage.setItem('noh-budget-last-backup',stamp); showBackupStamp();
+    alert('Backup created. In the iPhone save/share screen, choose Save to Files and select iCloud Drive. Keep the file private.');
+  }catch(e){alert('Backup could not be created. Your existing budget data was not changed.')}
+}
+function restoreBackup(ev){
+  const file=ev.target.files&&ev.target.files[0]; ev.target.value='';
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const payload=JSON.parse(reader.result);
+      if(!payload || payload.app!=='N•O•H Budget Tracker' || payload.backupFormat!==1 || payload.storageKey!=='noh-budget-data-v3' || !payload.data){
+        alert('This is not a valid N•O•H Budget Tracker backup. Nothing was changed.'); return;
+      }
+      const when=payload.createdAt?new Date(payload.createdAt).toLocaleString():'unknown date';
+      if(!confirm(`Restore the N•O•H backup from ${when}? This will replace the budget data currently stored in this browser.`))return;
+      localStorage.setItem('noh-budget-data-v3',JSON.stringify(payload.data));
+      alert('Backup restored successfully. N•O•H will reload now.');
+      location.reload();
+    }catch(e){alert('The backup file could not be read. Nothing was changed.')}
+  };
+  reader.onerror=()=>alert('The backup file could not be opened. Nothing was changed.');
+  reader.readAsText(file);
+}
+
+showBackupStamp();
 </script>
 </body></html>
