@@ -1,1 +1,8 @@
-{"name":"N•O•H Budget Tracker","short_name":"N•O•H Budget","start_url":".","display":"standalone","background_color":"#fbf7fd","theme_color":"#6f3b91"}
+{
+  "name": "N•O•H Budget Tracker",
+  "short_name": "N•O•H Budget",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6eafb",
+  "theme_color": "#6f3b91"
+}
