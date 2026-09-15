@@ -2,100 +2,78 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#7d3fa1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#6f3b91">
 <link rel="manifest" href="manifest.json">
-<title>Nelli's Budget 💜</title>
+<title>N•O•H Budget Tracker</title>
 <style>
-:root{--p:#7d3fa1;--p2:#b76bd4;--bg:#faf7fc;--card:#fff;--ink:#29202e;--muted:#766b7c;--good:#29965e;--bad:#d34d70;--line:#eee5f1}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f5eafb,#fff 55%);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
-.app{max-width:760px;margin:auto;padding:16px 13px 45px}.top{display:flex;justify-content:space-between;align-items:center}.brand{font-size:25px;font-weight:850;color:var(--p)}.sub{font-size:12px;color:var(--muted);margin-top:2px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:21px;padding:16px;margin:12px 0;box-shadow:0 7px 22px rgba(77,40,90,.07)}
-select,input{font:inherit;width:100%;padding:12px;border:1px solid #e3d8e8;border-radius:12px;background:#fff;color:var(--ink)}
-.months{display:grid;grid-template-columns:1fr 1fr;gap:9px}.label{font-size:11px;color:var(--muted);display:block;margin-bottom:5px}
-.balance{text-align:center}.small{font-size:12px;color:var(--muted)}.big{font-size:36px;font-weight:900;color:var(--p);margin:3px 0 12px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#faf7fc;border-radius:14px;padding:10px}.stat b{display:block;font-size:16px}.stat span{font-size:10px;color:var(--muted)}
-h2{font-size:17px;margin:0 0 12px}.piebox{display:grid;place-items:center}.pie{width:min(300px,75vw);aspect-ratio:1;border-radius:50%;position:relative}.hole{position:absolute;inset:27%;background:#fff;border-radius:50%;display:grid;place-items:center;text-align:center;font-weight:850;color:var(--p);box-shadow:0 0 0 1px #f0e6f3}.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.leg{font-size:12px;display:flex;gap:7px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;flex:none}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.tab{background:#f0e8f4;color:#684879}.tab.active{background:var(--p);color:#fff}
-.form{display:grid;grid-template-columns:1fr 1fr;gap:9px}.full{grid-column:1/-1}button{border:0;border-radius:12px;padding:12px;font:inherit;font-weight:800}.spend{background:#fdeaf0;color:#a72d4e}.receive{background:#e8f8ee;color:#216f47}.save{background:var(--p);color:white}.secondary{background:#f0e8f4;color:#684879}.danger{background:#fbecef;color:#a72d4e}
-.tx{display:flex;justify-content:space-between;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}.tx:last-child{border-bottom:0}.txname{font-weight:750}.meta{font-size:11px;color:var(--muted);margin-top:2px}.plus{color:var(--good);font-weight:850}.minus{color:var(--bad);font-weight:850}
-.category-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}.category-row:last-child{border-bottom:0}.note{font-size:11px;line-height:1.45;color:var(--muted)}
-.hidden{display:none}.history{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.history:last-child{border:0}
-@media(max-width:440px){.form{grid-template-columns:1fr}.full{grid-column:auto}.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#302436;background:linear-gradient(180deg,#f6eafb,#fff 55%)}.app{max-width:800px;margin:auto;padding:15px 13px 60px}.head{display:flex;justify-content:space-between;align-items:center}.logo{font:900 31px Georgia,serif;color:#6f3b91;letter-spacing:2px}.tag{font:italic 13px Georgia,serif;color:#866092}.flowers{font-size:27px}.card{background:#fffdfedb;border:1px solid #eadff0;border-radius:22px;padding:16px;margin:12px 0;box-shadow:0 9px 24px #58346a12}.card h2{font:700 19px Georgia,serif;color:#5a326e;margin:0 0 12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.label{font-size:11px;color:#786d80;display:block;margin-bottom:5px}input,select{width:100%;padding:12px;border:1px solid #dfd0e6;border-radius:13px;background:#fff;font:inherit;color:#302436}button{border:0;border-radius:13px;padding:11px;font:inherit;font-weight:800}.primary{background:#6f3b91;color:#fff}.soft{background:#f1e8f5;color:#613d70}.danger{background:#faeaf0;color:#a42e4d}.receive{background:#e7f7ed;color:#236c46}.spend{background:#fbe9ee;color:#a32d4c}.balance{text-align:center}.big{font-size:42px;font-weight:950;color:#6f3b91;margin:2px 0 11px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.stat{padding:9px 5px;background:#faf7fc;border-radius:14px}.stat b{display:block;font-size:14px}.stat span{font-size:9px;color:#786d80}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.tab{background:#eee6f3;color:#69477a}.tab.active{background:#6f3b91;color:#fff}.form{display:grid;grid-template-columns:1fr 1fr;gap:9px}.full{grid-column:1/-1}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:8px}.quick button{background:#f7effa;color:#70457f;font-size:11px}.piebox{display:grid;place-items:center}.pie{width:min(320px,78vw);aspect-ratio:1;border-radius:50%;box-shadow:0 8px 24px #5d39701c;position:relative}.hole{position:absolute;inset:27%;border-radius:50%;background:#fff;display:grid;place-items:center;text-align:center;font-weight:900;color:#6f3b91}.legend{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:14px}.leg{font-size:11px;display:flex;gap:7px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;flex:none}.row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eadff0}.row:last-child{border-bottom:0}.name{font-weight:800}.meta,.note{font-size:10px;color:#786d80}.money{font-weight:900;white-space:nowrap}.plus{color:#218b55}.minus{color:#c74466}.actions{display:flex;gap:5px;align-items:center}.tiny{padding:5px 8px;font-size:10px}.goal{border:1px solid #eadff0;border-radius:15px;padding:11px;margin:7px 0;background:#fffafd}.progress{height:8px;background:#eee5f1;border-radius:99px;overflow:hidden;margin:7px 0}.bar{height:100%;background:linear-gradient(90deg,#6f3b91,#b875d0);border-radius:99px}.category{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eadff0;font-size:13px}.compare{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;text-align:center}.compare div{background:#faf7fc;border-radius:13px;padding:10px}.compare b{display:block;font-size:13px}@media(max-width:500px){.stats{grid-template-columns:1fr 1fr}.grid,.form{grid-template-columns:1fr}.full{grid-column:auto}.quick{grid-template-columns:1fr 1fr}.legend{grid-template-columns:1fr}.compare{grid-template-columns:1fr}}
 </style>
 </head>
-<body><div class="app">
-<div class="top"><div><div class="brand">💜 Nelli's Budget</div><div class="sub">Your money, your way.</div></div><div>✨</div></div>
+<body>
+<div class="app">
+<div class="head"><div><div class="logo">N•O•H</div><div class="tag">Budget Tracker · plan beautifully</div></div><div class="flowers">🌸 🌹</div></div>
 
-<div class="card">
- <div class="months">
-  <div><span class="label">Month</span><select id="month"></select></div>
-  <div><span class="label">Year</span><select id="year"></select></div>
- </div>
-</div>
+<div class="card"><div class="grid"><div><span class="label">Month</span><select id="month"></select></div><div><span class="label">Year</span><select id="year"></select></div></div></div>
 
-<div class="card balance">
- <div class="small">MONEY LEFT</div><div class="big" id="balance">$0</div>
- <div class="stats">
-  <div class="stat"><b id="income">$0</b><span>Money in</span></div>
-  <div class="stat"><b id="bills">$0</b><span>Recurring bills</span></div>
-  <div class="stat"><b id="out">$0</b><span>Money out</span></div>
- </div>
-</div>
+<div class="card balance"><div class="label">MONEY LEFT</div><div class="big" id="balance">$0</div><div class="stats"><div class="stat"><b id="income">$0</b><span>Total money in</span></div><div class="stat"><b id="salaryD">$0</b><span>Base salary</span></div><div class="stat"><b id="extraD">$0</b><span>Overtime + extras</span></div><div class="stat"><b id="out">$0</b><span>Total money out</span></div></div></div>
 
-<div class="card">
- <h2>🥧 Where your money is going</h2>
- <div class="piebox"><div class="pie" id="pie"><div class="hole"><div><div id="pieTotal">$0</div><span class="small">spent</span></div></div></div></div>
- <div class="legend" id="legend"></div>
-</div>
+<div class="card"><h2>🥧 Where My Money Goes</h2><div class="piebox"><div class="pie" id="pie"><div class="hole"><div><div id="alloc">$0</div><span class="label">allocated</span></div></div></div></div><div class="legend" id="legend"></div></div>
 
-<div class="card">
- <div class="tabs"><button id="spendTab" class="tab active" onclick="setMode('spend')">➖ Spend</button><button id="receiveTab" class="tab" onclick="setMode('receive')">➕ Receive</button></div>
- <div style="height:10px"></div>
- <div class="form">
-  <input id="desc" class="full" placeholder="What is it? e.g. Taxi, Food, Shopping">
-  <input id="amount" type="number" min="0" step="1" placeholder="Amount (GYD)">
-  <select id="category"><option>Food</option><option>Transportation</option><option>Savings</option><option>Shopping</option><option>Beauty</option><option>Entertainment</option><option>Other</option></select>
-  <button id="actionBtn" class="spend full" onclick="addEntry()">➖ Record spending</button>
- </div>
-</div>
+<div class="card"><div class="tabs"><button id="spendTab" class="tab active" onclick="setMode('spend')">➖ Spend</button><button id="receiveTab" class="tab" onclick="setMode('receive')">➕ Receive</button></div><div style="height:10px"></div>
+<div class="form"><input id="desc" class="full" placeholder="What was the money for?"><select id="category"></select><select id="subcat"></select><input id="amount" type="number" min="0" placeholder="Amount (GYD)"><button id="action" class="spend full" onclick="addTx()">➖ Record spending</button></div>
+<div class="quick"><button onclick="quick('Taxi','Transportation','Taxi')">🚕 Taxi</button><button onclick="quick('Meal','Food','Meal')">🍔 Meal</button><button onclick="quick('Snack','Food','Snack')">🍿 Snack</button><button onclick="quick('Going Out','Entertainment','Going Out')">🎉 Going Out</button></div></div>
 
-<div class="card"><h2>📊 This month</h2><div id="cats"></div></div>
+<div class="card"><h2>💰 Money In</h2><div class="grid"><div><span class="label">Base salary</span><input id="salary" type="number"></div><div><span class="label">Overtime</span><input id="overtime" type="number"></div></div><div class="form" style="margin-top:9px"><input id="extraName" placeholder="Birthday, brother, Christmas..."><input id="extraAmount" type="number" placeholder="Amount (GYD)"><button class="receive full" onclick="addExtra()">➕ Add extra money</button></div></div>
 
-<div class="card"><h2>🧾 Activity</h2><div id="txlist"></div></div>
+<div class="card"><h2>🎯 Savings Goals</h2><div id="goals"></div><hr><div class="form"><input id="goalName" placeholder="Savings goal"><input id="goalTarget" type="number" placeholder="Target (GYD)"><button class="primary full" onclick="addGoal()">🌸 Add goal</button></div><p class="note">Savings contributions become their own chart slices.</p></div>
 
-<div class="card"><h2>💰 Monthly setup</h2>
- <div class="form"><div><span class="label">Salary</span><input id="salary" type="number"></div><div><span class="label">Recurring bills</span><input id="recurring" type="number"></div></div>
- <button class="save full" style="margin-top:9px" onclick="saveSetup()">Save monthly setup</button>
- <p class="note">Your current default is GYD $133,135 salary and GYD $80,720 recurring expenses. You can change them anytime.</p>
-</div>
-
-<div class="card"><h2>📅 Monthly history</h2><div id="history"></div><p class="note">Each month is kept separately on this device/browser.</p></div>
-
+<div class="card"><h2>📊 Spending by Category</h2><div id="cats"></div></div>
+<div class="card"><h2>🧾 Activity</h2><div id="activity"></div></div>
+<div class="card"><h2>📅 Compare Months</h2><div class="grid"><div><span class="label">Compare month</span><select id="cm"></select></div><div><span class="label">Compare year</span><select id="cy"></select></div></div><div id="compare" style="margin-top:10px"></div></div>
+<div class="card"><h2>🗓️ Saved Month History</h2><div id="history"></div></div>
 <div class="card"><button class="danger" style="width:100%" onclick="resetMonth()">Reset this month</button></div>
 </div>
+
 <script>
-const KEY='nelli-budget-v2',months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-const colors={Food:'#e67e22',Transportation:'#3498db',Savings:'#8e44ad',Shopping:'#e84393',Beauty:'#27ae60',Entertainment:'#f1c40f',Other:'#95a5a6'};
-const cats=Object.keys(colors);let db=JSON.parse(localStorage.getItem(KEY)||'{}'), mode='spend',now=new Date(),m=now.getMonth(),y=now.getFullYear();
-function k(){return y+'-'+String(m+1).padStart(2,'0')}
-function d(){if(!db[k()])db[k()]={salary:133135,recurring:80720,tx:[]};return db[k()]}
+const KEY='noh-budget-data-v3', OLD=['nelli-budget-v2','nelli-money-tracker-v1'];
+const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const cats=['Food','Transportation','Shopping','Beauty','Entertainment','Internet','Loans','Household Contribution','Subscriptions','iCloud Storage','Medication','Mobile Data','Other'];
+const subs={Food:['Meal','Drink','Snack','Groceries','Takeout','Dessert','Other Food'],Transportation:['Taxi','Bus','Fuel','Parking','Other Transportation'],Shopping:['Clothes','Shoes','Home','Electronics','Other Shopping'],Beauty:['Skincare','Hair','Nails','Makeup','Other Beauty'],Entertainment:['BTS Concert','Going Out','Movies','Events','Music','Other Entertainment'],Internet:['Home Internet','Other Internet'],Loans:['Car Loan','Personal Loan','Other Loan'],'Household Contribution':['Mommy','Household','Utilities','Other Contribution'],Subscriptions:['Netflix','Streaming','Other Subscription'],'iCloud Storage':['iCloud Storage'],Medication:['Medication','Pharmacy','Other Medication'],'Mobile Data':['Mobile Data','Phone Data','Other Mobile Data'],Other:['General','Other']};
+const colors=['#ef9b51','#55a9e8','#ed72a4','#62bd7a','#e9b949','#8d6aa8','#c66c8c','#9a83ba','#6fb4a0','#b68bd0','#d87c92','#7198c7','#aaa1ad'];
+let m=new Date().getMonth(),y=new Date().getFullYear(),cm0=m,cy0=y,mode='spend',db=load();
+function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
+function fresh(){return{salary:133135,overtime:0,tx:[],extras:[],goals:[{id:id(),name:'BTS Ticket',target:10000,saved:0},{id:id(),name:'Future Goal',target:0,saved:0},{id:id(),name:'Keisha Cole Ticket',target:20000,saved:0}]}}
+function normalize(z){z=z||fresh();z.salary=Number(z.salary??133135);z.overtime=Number(z.overtime||0);z.tx=Array.isArray(z.tx)?z.tx:[];z.extras=Array.isArray(z.extras)?z.extras:[];z.goals=Array.isArray(z.goals)?z.goals:[];return z}
+function migrate(){let out={},ok=false;for(const k0 of OLD){let raw=localStorage.getItem(k0);if(!raw)continue;try{let old=JSON.parse(raw);for(const k of Object.keys(old)){if(!/^\d{4}-\d{2}$/.test(k))continue;let o=old[k],z=fresh();z.salary=Number(o.salary)||133135;(o.tx||[]).forEach(t=>{let a=Number(t.amount)||0;z.tx.push({id:id(),desc:t.desc||'Entry',amount:a,cat:cats.includes(t.cat)?t.cat:'Other',sub:'General'})});out[k]=z;ok=true}}catch(e){}}if(ok)localStorage.setItem(KEY,JSON.stringify(out));return out}
+function load(){try{let s=localStorage.getItem(KEY);if(s)return JSON.parse(s)}catch(e){}return migrate()}
 function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function key(){return y+'-'+String(m+1).padStart(2,'0')}
+function cur(){if(!db[key()])db[key()]=fresh();return normalize(db[key()])}
 function fmt(n){return new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(Math.round(n))}
-function init(){month.innerHTML=months.map((x,i)=>`<option value="${i}">${x}</option>`).join('');year.innerHTML=Array.from({length:11},(_,i)=>2025+i).map(x=>`<option>${x}</option>`).join('');month.value=m;year.value=y;month.onchange=()=>{m=+month.value;render()};year.onchange=()=>{y=+year.value;render()};render()}
-function setMode(x){mode=x;spendTab.className='tab '+(x==='spend'?'active':'');receiveTab.className='tab '+(x==='receive'?'active':'');actionBtn.className=x==='spend'?'spend full':'receive full';actionBtn.textContent=x==='spend'?'➖ Record spending':'➕ Add money received'}
-function addEntry(){let descv=desc.value.trim(),a=Number(amount.value),c=category.value;if(!descv||!a||a<0)return alert('Enter a description and amount.');d().tx.push({id:Date.now(),desc:descv,amount:mode==='spend'?-a:a,cat:c});save();desc.value='';amount.value='';render()}
-function del(id){d().tx=d().tx.filter(x=>x.id!==id);save();render()}
-function saveSetup(){d().salary=Math.max(0,Number(salary.value));d().recurring=Math.max(0,Number(recurring.value));save();render()}
-function resetMonth(){if(confirm('Reset all entries for '+months[m]+' '+y+'?')){delete db[k()];save();render()}}
-function render(){let z=d();salary.value=z.salary;recurring.value=z.recurring;let received=z.tx.filter(x=>x.amount>0).reduce((a,x)=>a+x.amount,0),spent=z.tx.filter(x=>x.amount<0).reduce((a,x)=>a-x.amount,0),bal=z.salary+received-z.recurring-spent;
-balance.textContent='$'+fmt(bal);income.textContent='$'+fmt(z.salary+received);bills.textContent='$'+fmt(z.recurring);out.textContent='$'+fmt(spent);pieTotal.textContent='$'+fmt(spent);
-let sums={};cats.forEach(c=>sums[c]=0);z.tx.filter(x=>x.amount<0).forEach(x=>sums[x.cat]+=(-x.amount));let total=spent,acc=0,stops=[];cats.forEach(c=>{let p=total?sums[c]/total*100:0;stops.push(colors[c]+' '+acc+'% '+(acc+p)+'%');acc+=p});pie.style.background=total?'conic-gradient('+stops.join(',')+')':'#eadff0';
-legend.innerHTML=cats.filter(c=>sums[c]).map(c=>`<div class="leg"><i class="dot" style="background:${colors[c]}"></i>${c}: $${fmt(sums[c])}</div>`).join('')||'<span class="note">No spending recorded yet.</span>';
-cats.innerHTML=cats.map(c=>`<div class="category-row"><span>${c}</span><b>$${fmt(sums[c])}</b></div>`).join('');
-txlist.innerHTML=z.tx.length?z.tx.slice().reverse().map(x=>`<div class="tx"><div><div class="txname">${esc(x.desc)}</div><div class="meta">${x.cat}</div></div><div><span class="${x.amount>0?'plus':'minus'}">${x.amount>0?'+':'−'}$${fmt(Math.abs(x.amount))}</span> <button class="secondary" style="padding:4px 8px" onclick="del(${x.id})">×</button></div></div>`).join(''):'<span class="note">No activity recorded this month.</span>';
-let keys=Object.keys(db).sort().reverse();history.innerHTML=keys.length?keys.map(key=>{let q=db[key],sp=q.tx.filter(x=>x.amount<0).reduce((a,x)=>a-x.amount,0),inc=q.tx.filter(x=>x.amount>0).reduce((a,x)=>a+x.amount,0),left=q.salary+inc-q.recurring-sp;let [yy,mm]=key.split('-');return `<div class="history"><span><b>${months[+mm-1]} ${yy}</b><br><span class="meta">Spent $${fmt(sp)}</span></span><b style="color:${left>=0?'var(--good)':'var(--bad)'}">$${fmt(left)} left</b></div>`}).join(''):'<span class="note">Your saved months will appear here.</span>'}
-function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-init()
+function totals(q){let spend={};cats.forEach(c=>spend[c]=0);q.tx.filter(t=>t.amount<0).forEach(t=>spend[t.cat]+=(-t.amount));let extra=q.extras.reduce((a,e)=>a+e.amount,0),recv=q.tx.filter(t=>t.amount>0).reduce((a,t)=>a+t.amount,0),spent=q.tx.filter(t=>t.amount<0).reduce((a,t)=>a-t.amount,0),saved=q.goals.reduce((a,g)=>a+g.saved,0);return{in:q.salary+q.overtime+extra+recv,spend,saved,spent,out:saved+spent,left:q.salary+q.overtime+extra+recv-saved-spent}}
+function setMode(v){mode=v;spendTab.className='tab '+(v==='spend'?'active':'');receiveTab.className='tab '+(v==='receive'?'active':'');action.className=(v==='spend'?'spend':'receive')+' full';action.textContent=v==='spend'?'➖ Record spending':'➕ Add money received'}
+function updateSubs(){subcat.innerHTML=(subs[category.value]||['General']).map(x=>`<option>${x}</option>`).join('')}
+function quick(d,c,s){desc.value=d;category.value=c;updateSubs();subcat.value=s;amount.focus()}
+function addTx(){let a=Number(amount.value),d=desc.value.trim();if(!d||a<=0)return alert('Enter a description and amount.');cur().tx.push({id:id(),desc:d,amount:mode==='spend'?-a:a,cat:category.value,sub:subcat.value});save();desc.value='';amount.value='';render()}
+function addExtra(){let n=extraName.value.trim()||'Extra money',a=Number(extraAmount.value);if(a<=0)return alert('Enter an amount.');cur().extras.push({id:id(),name:n,amount:a});save();extraName.value='';extraAmount.value='';render()}
+function addGoal(){let n=goalName.value.trim(),t=Number(goalTarget.value)||0;if(!n)return alert('Enter a goal.');cur().goals.push({id:id(),name:n,target:t,saved:0});save();goalName.value='';goalTarget.value='';render()}
+function saveIncome(){cur().salary=Math.max(0,Number(salary.value));cur().overtime=Math.max(0,Number(overtime.value));save();render()}
+salary.onchange=saveIncome;overtime.onchange=saveIncome;
+function saveGoal(i){let g=cur().goals.find(x=>x.id===i),a=Number(prompt('Amount to add to '+g.name,0));if(a>0){g.saved+=a;save();render()}}
+function editGoal(i){let g=cur().goals.find(x=>x.id===i),n=prompt('Goal name',g.name);if(n===null)return;let t=prompt('Target amount',g.target);if(t!==null&&n.trim()){g.name=n.trim();g.target=Math.max(0,Number(t)||0);save();render()}}
+function delGoal(i){if(confirm('Remove this goal?')){cur().goals=cur().goals.filter(x=>x.id!==i);save();render()}}
+function delTx(i){cur().tx=cur().tx.filter(x=>x.id!==i);save();render()}
+function resetMonth(){if(confirm('Reset '+months[m]+' '+y+'?')){delete db[key()];save();render()}}
+function monthData(yy,mm){let k=yy+'-'+String(mm+1).padStart(2,'0');return normalize(db[k]||fresh())}
+function render(){let q=cur(),t=totals(q);salary.value=q.salary;overtime.value=q.overtime;balance.textContent='$'+fmt(t.left);income.textContent='$'+fmt(t.in);salaryD.textContent='$'+fmt(q.salary);extraD.textContent='$'+fmt(q.overtime+q.extras.reduce((a,e)=>a+e.amount,0));out.textContent='$'+fmt(t.out);
+let slices=[];cats.forEach((c,i)=>{if(t.spend[c])slices.push({n:c,v:t.spend[c],c:colors[i]})});q.goals.forEach((g,i)=>{if(g.saved)slices.push({n:'Savings · '+g.name,v:g.saved,c:colors[(i+3)%colors.length]})});if(t.left>0)slices.push({n:'Money left',v:t.left,c:'#d8c9df'});let total=slices.reduce((a,s)=>a+s.v,0),pos=0,st=[];slices.forEach(s=>{let p=total?s.v/total*100:0;st.push(`${s.c} ${pos}% ${pos+p}%`);pos+=p});pie.style.background=total?'conic-gradient('+st.join(',')+')':'#eadff0';alloc.textContent='$'+fmt(t.out);legend.innerHTML=slices.map(s=>`<div class="leg"><i class="dot" style="background:${s.c}"></i>${s.n}: $${fmt(s.v)}</div>`).join('')||'<span class="note">Nothing recorded yet.</span>';
+cats.innerHTML=cats.map(c=>`<div class="category"><span>${c}</span><b>$${fmt(t.spend[c])}</b></div>`).join('');
+goals.innerHTML=q.goals.map(g=>{let p=g.target?Math.min(100,g.saved/g.target*100):0;return`<div class="goal"><div class="row" style="padding:0;border:0"><div><div class="name">🌸 ${g.name}</div><div class="meta">$${fmt(g.saved)} saved${g.target?' of $'+fmt(g.target):''}</div></div><div class="actions"><button class="primary tiny" onclick="saveGoal('${g.id}')">+ Save</button><button class="soft tiny" onclick="editGoal('${g.id}')">Edit</button><button class="danger tiny" onclick="delGoal('${g.id}')">×</button></div></div><div class="progress"><div class="bar" style="width:${p}%"></div></div></div>`}).join('');
+let rows=q.extras.map(e=>`<div class="row"><div><div class="name">✨ ${e.name}</div><div class="meta">Extra money</div></div><span class="plus">+$${fmt(e.amount)}</span></div>`).join('');rows+=q.tx.slice().reverse().map(t=>`<div class="row"><div><div class="name">${t.desc}</div><div class="meta">${t.cat} · ${t.sub}</div></div><div class="actions"><span class="${t.amount>0?'plus':'minus'}">${t.amount>0?'+':'−'}$${fmt(Math.abs(t.amount))}</span><button class="soft tiny" onclick="delTx('${t.id}')">×</button></div></div>`).join('');activity.innerHTML=rows||'<span class="note">No activity this month.</span>';renderCompare();renderHistory()}
+function renderCompare(){let a=totals(cur()),b=totals(monthData(cy0,cm0));compare.innerHTML=`<div class="compare"><div><b>${months[m]} ${y}</b>Money out<br>$${fmt(a.out)}</div><div><b>${months[cm0]} ${cy0}</b>Money out<br>$${fmt(b.out)}</div><div><b>Difference</b>${a.out>=b.out?'+':'−'}$${fmt(Math.abs(a.out-b.out))}<br>${a.out>=b.out?'more':'less'}</div></div>`}
+function renderHistory(){let ks=Object.keys(db).sort().reverse();history.innerHTML=ks.map(k=>{let [yy,mm]=k.split('-').map(Number),t=totals(db[k]);return`<div class="row"><div><b>${months[mm-1]} ${yy}</b><div class="meta">In $${fmt(t.in)} · Out $${fmt(t.out)} · Saved $${fmt(t.saved)}</div></div><b class="${t.left>=0?'plus':'minus'}">$${fmt(t.left)} left</b></div>`}).join('')||'<span class="note">Saved months appear here.</span>'}
+function init(){category.innerHTML=cats.map(x=>`<option>${x}</option>`).join('');updateSubs();month.innerHTML=months.map((x,i)=>`<option value="${i}">${x}</option>`).join('');year.innerHTML=Array.from({length:15},(_,i)=>2024+i).map(x=>`<option>${x}</option>`).join('');cm.innerHTML=months.map((x,i)=>`<option value="${i}">${x}</option>`).join('');cy.innerHTML=Array.from({length:15},(_,i)=>2024+i).map(x=>`<option>${x}</option>`).join('');month.value=m;year.value=y;cm.value=cm0;cy.value=cy0;month.onchange=()=>{m=+month.value;render()};year.onchange=()=>{y=+year.value;render()};cm.onchange=()=>{cm0=+cm.value;renderCompare()};cy.onchange=()=>{cy0=+cy.value;renderCompare()};render()}
+init();
 </script>
 </body></html>
