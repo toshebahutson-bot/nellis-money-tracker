@@ -2,158 +2,87 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6f3b91">
 <link rel="manifest" href="manifest.json">
 <title>N•O•H Budget Tracker</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#302436;background:linear-gradient(180deg,#f6eafb,#fff 55%)}.app{max-width:800px;margin:auto;padding:15px 13px 60px}.head{display:flex;justify-content:space-between;align-items:center}.logo{font:900 31px Georgia,serif;color:#6f3b91;letter-spacing:2px}.tag{font:italic 13px Georgia,serif;color:#866092}.flowers{font-size:27px}.card{background:#fffdfedb;border:1px solid #eadff0;border-radius:22px;padding:16px;margin:12px 0;box-shadow:0 9px 24px #58346a12}.card h2{font:700 19px Georgia,serif;color:#5a326e;margin:0 0 12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.label{font-size:11px;color:#786d80;display:block;margin-bottom:5px}input,select{width:100%;padding:12px;border:1px solid #dfd0e6;border-radius:13px;background:#fff;font:inherit;color:#302436}button{border:0;border-radius:13px;padding:11px;font:inherit;font-weight:800}.primary{background:#6f3b91;color:#fff}.soft{background:#f1e8f5;color:#613d70}.danger{background:#faeaf0;color:#a42e4d}.receive{background:#e7f7ed;color:#236c46}.spend{background:#fbe9ee;color:#a32d4c}.balance{text-align:center}.big{font-size:42px;font-weight:950;color:#6f3b91;margin:2px 0 11px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.stat{padding:9px 5px;background:#faf7fc;border-radius:14px}.stat b{display:block;font-size:14px}.stat span{font-size:9px;color:#786d80}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.tab{background:#eee6f3;color:#69477a}.tab.active{background:#6f3b91;color:#fff}.form{display:grid;grid-template-columns:1fr 1fr;gap:9px}.full{grid-column:1/-1}.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.quick button{min-height:42px}.quick button{background:#f7effa;color:#70457f;font-size:11px}.piebox{display:grid;place-items:center}.pie{width:min(320px,78vw);aspect-ratio:1;border-radius:50%;box-shadow:0 8px 24px #5d39701c;position:relative}.hole{position:absolute;inset:27%;border-radius:50%;background:#fff;display:grid;place-items:center;text-align:center;font-weight:900;color:#6f3b91}.legend{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:14px}.leg{font-size:11px;display:flex;gap:7px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;flex:none}.row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eadff0}.row:last-child{border-bottom:0}.name{font-weight:800}.meta,.note{font-size:10px;color:#786d80}.money{font-weight:900;white-space:nowrap}.plus{color:#218b55}.minus{color:#c74466}.actions{display:flex;gap:5px;align-items:center}.tiny{padding:5px 8px;font-size:10px}.goal{border:1px solid #eadff0;border-radius:15px;padding:11px;margin:7px 0;background:#fffafd}.progress{height:8px;background:#eee5f1;border-radius:99px;overflow:hidden;margin:7px 0}.bar{height:100%;background:linear-gradient(90deg,#6f3b91,#b875d0);border-radius:99px}.category{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eadff0;font-size:13px}.compare{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;text-align:center}.compare div{background:#faf7fc;border-radius:13px;padding:10px}.compare b{display:block;font-size:13px}@media(max-width:500px){.stats{grid-template-columns:1fr 1fr}.grid,.form{grid-template-columns:1fr}.full{grid-column:auto}.quick{grid-template-columns:1fr 1fr}.legend{grid-template-columns:1fr}.compare{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
-<div class="app">
-<div class="head"><div><div class="logo">N•O•H</div><div class="tag">Budget Tracker · plan beautifully</div></div><div class="flowers">🌸 🌹</div></div>
-
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#302436;background:linear-gradient(180deg,#f5e8fb,#fff 45%);min-height:100vh}.app{max-width:820px;margin:auto;padding:0 13px calc(92px + env(safe-area-inset-bottom))}.top{position:sticky;top:0;z-index:20;background:#fbf7fddd;backdrop-filter:blur(15px);padding:calc(10px + env(safe-area-inset-top)) 3px 10px;display:flex;justify-content:space-between;align-items:center}.brand{font:900 29px Georgia,serif;color:#6f3b91}.tag{font:italic 12px Georgia,serif;color:#866092}.flower{font-size:21px}.icon{border:0;background:#eee4f3;border-radius:14px;padding:9px 12px;font-size:20px}.screen{display:none}.screen.active{display:block}.card{background:#fff;border:1px solid #eadff0;border-radius:22px;padding:16px;margin:12px 0;box-shadow:0 9px 24px #58346a10}.card h2{font:700 20px Georgia,serif;color:#5a326e;margin:0 0 12px}.balance{text-align:center}.big{font-size:42px;font-weight:950;color:#6f3b91;margin:3px 0 8px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.stat{padding:9px 4px;background:#faf7fc;border-radius:14px;text-align:center}.stat b{display:block;font-size:14px}.stat span,.label,.note{font-size:11px;color:#786d80}.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.form{display:grid;grid-template-columns:1fr 1fr;gap:9px}.full{grid-column:1/-1}input,select{width:100%;padding:13px;border:1px solid #ddcfe6;border-radius:13px;background:#fff;font:inherit;color:#302436}button{border:0;border-radius:13px;padding:12px;font:inherit;font-weight:800}.primary{background:#6f3b91;color:#fff}.soft{background:#f1e8f5;color:#613d70}.danger{background:#faeaf0;color:#a42e4d}.receive{background:#e7f7ed;color:#236c46}.spend{background:#fbe9ee;color:#a32d4c}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.tab.active{background:#6f3b91;color:#fff}.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.quick button{min-height:43px;background:#f7effa;color:#70457f;font-size:11px}.piebox{display:grid;place-items:center}.pie{width:min(315px,78vw);aspect-ratio:1;border-radius:50%;position:relative;box-shadow:0 8px 24px #5d39701c}.hole{position:absolute;inset:27%;border-radius:50%;background:#fff;display:grid;place-items:center;text-align:center;font-weight:900;color:#6f3b91}.legend{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:14px}.leg{font-size:11px;display:flex;gap:7px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;flex:none}.row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eadff0}.row:last-child{border-bottom:0}.name{font-weight:800}.meta{font-size:10px;color:#786d80}.money{font-weight:900;white-space:nowrap}.tiny{padding:6px 8px;font-size:10px}.goal{border:1px solid #eadff0;border-radius:15px;padding:11px;margin:7px 0;background:#fffafd}.progress{height:8px;background:#eee5f1;border-radius:99px;overflow:hidden;margin:7px 0}.bar{height:100%;background:linear-gradient(90deg,#6f3b91,#b875d0)}.status{display:inline-block;font-size:11px;color:#236c46;background:#e7f7ed;padding:6px 9px;border-radius:99px;margin-bottom:9px}.bottom{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fffc;backdrop-filter:blur(15px);border-top:1px solid #eadff0;padding:6px 8px calc(6px + env(safe-area-inset-bottom));display:flex;justify-content:center}.nav{width:min(820px,100%);display:grid;grid-template-columns:repeat(5,1fr);gap:3px}.nav button{background:transparent;color:#786d80;padding:6px 1px;font-size:10px}.nav button b{display:block;font-size:19px}.nav button.active{color:#6f3b91;background:#f5edf8}.drawer{position:fixed;inset:0;z-index:50;pointer-events:none}.shade{position:absolute;inset:0;background:#0004;opacity:0;transition:.2s}.panel{position:absolute;top:0;right:0;width:min(340px,87vw);height:100%;background:#fff;padding:calc(18px + env(safe-area-inset-top)) 16px 20px;transform:translateX(105%);transition:.2s;overflow:auto}.drawer.open{pointer-events:auto}.drawer.open .shade{opacity:1}.drawer.open .panel{transform:none}.menu button{width:100%;text-align:left;background:#f8f2fa;color:#5a326e;margin:5px 0}.compare{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;text-align:center}.compare div{background:#faf7fc;border-radius:13px;padding:10px}.empty{text-align:center;color:#8a7d91;padding:20px 8px}.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#302436;color:#fff;padding:9px 13px;border-radius:99px;font-size:12px;z-index:70;opacity:0;transition:.2s;pointer-events:none}.toast.show{opacity:1}.yearbox{border:1px solid #eadff0;border-radius:15px;padding:10px;margin:8px 0}
+@media(max-width:500px){.stats{grid-template-columns:1fr 1fr}.grid,.form{grid-template-columns:1fr}.full{grid-column:auto}.quick{grid-template-columns:1fr 1fr}.legend{grid-template-columns:1fr}.compare{grid-template-columns:1fr}}
+</style></head>
+<body><div class="app">
+<header class="top"><div><div class="brand">N•O•H <span class="flower">🌸</span></div><div class="tag">Budget Tracker • plan beautifully</div></div><button class="icon" onclick="toggleDrawer(true)">☰</button></header>
+<main>
+<section id="home" class="screen active">
 <div class="card"><div class="grid"><div><span class="label">Month</span><select id="month"></select></div><div><span class="label">Year</span><select id="year"></select></div></div></div>
-
-<div class="card balance"><div class="label">MONEY LEFT</div><div class="big" id="balance">$0</div><div class="stats"><div class="stat"><b id="income">$0</b><span>Total money in</span></div><div class="stat"><b id="salaryD">$0</b><span>Base salary</span></div><div class="stat"><b id="extraD">$0</b><span>Overtime + extras</span></div><div class="stat"><b id="out">$0</b><span>Total money out</span></div></div></div>
-
-<div class="card"><h2>🥧 Where My Money Goes</h2><div class="piebox"><div class="pie" id="pie"><div class="hole"><div><div id="alloc">$0</div><span class="label">allocated</span></div></div></div></div><div class="legend" id="legend"></div></div>
-
-<div class="card"><div class="tabs"><button id="spendTab" class="tab active" onclick="setMode('spend')">➖ Spend</button><button id="receiveTab" class="tab" onclick="setMode('receive')">➕ Receive</button></div><div style="height:10px"></div>
-<div class="form"><input id="desc" class="full" placeholder="What was the money for?"><select id="category"></select><select id="subcat"></select><input id="amount" type="number" min="0" placeholder="Amount (GYD)"><button id="action" class="spend full" onclick="addTx()">➖ Record spending</button></div>
-<div class="quick" id="categoryQuick">
-<button onclick="pickCategory('Food')">🍽️ Food</button>
-<button onclick="pickCategory('Transportation')">🚕 Transportation</button>
-<button onclick="pickCategory('Shopping')">🛍️ Shopping</button>
-<button onclick="pickCategory('Beauty')">💄 Beauty</button>
-<button onclick="pickCategory('Entertainment')">🎉 Entertainment</button>
-<button onclick="pickCategory('Internet')">🌐 Internet</button>
-<button onclick="pickCategory('Loans')">🚗 Loans</button>
-<button onclick="pickCategory('Household Contribution')">🏠 Household</button>
-<button onclick="pickCategory('Subscriptions')">📺 Subscriptions</button>
-<button onclick="pickCategory('iCloud Storage')">☁️ iCloud</button>
-<button onclick="pickCategory('Medication')">💊 Medication</button>
-<button onclick="pickCategory('Mobile Data')">📱 Mobile Data</button>
-<button onclick="pickCategory('Other')">✨ Other</button>
-</div></div>
-
-<div class="card"><h2>💰 Money In</h2><div class="grid"><div><span class="label">Base salary</span><input id="salary" type="number"></div><div><span class="label">Overtime</span><input id="overtime" type="number"></div></div><div class="form" style="margin-top:9px"><input id="extraName" placeholder="Birthday, brother, Christmas..."><input id="extraAmount" type="number" placeholder="Amount (GYD)"><button class="receive full" onclick="addExtra()">➕ Add extra money</button></div></div>
-
-<div class="card"><h2>🎯 Savings Goals</h2><div id="goals"></div><hr><div class="form"><input id="goalName" placeholder="Savings goal"><input id="goalTarget" type="number" placeholder="Target (GYD)"><button class="primary full" onclick="addGoal()">🌸 Add goal</button></div><p class="note">Savings contributions become their own chart slices.</p></div>
-
-<div class="card"><h2>📊 Spending by Category</h2><div id="cats"></div></div>
-<div class="card"><h2>🧾 Activity</h2><div id="activity"></div></div>
-<div class="card"><h2>📅 Compare Months</h2><div class="grid"><div><span class="label">Compare month</span><select id="cm"></select></div><div><span class="label">Compare year</span><select id="cy"></select></div></div><div id="compare" style="margin-top:10px"></div></div>
-<div class="card"><h2>🗓️ Saved Month History</h2><div id="history"></div></div>
-
-<div class="card" id="backupRestoreCard">
-  <h2>☁️ Backup &amp; Restore</h2>
-  <p class="note">Protect your N•O•H data before clearing browser data or changing phones. Save exported backups privately in iCloud Drive.</p>
-  <div class="grid">
-    <button class="primary" onclick="exportBackup()">⬇️ Export Backup</button>
-    <button class="soft" onclick="document.getElementById('restoreFile').click()">⬆️ Restore Backup</button>
-  </div>
-  <input id="restoreFile" type="file" accept=".json,application/json" style="display:none" onchange="restoreBackup(event)">
-  <p class="note" id="backupStatus" style="margin-top:10px">Last backup: Never on this browser</p>
-</div>
-
-<div class="card"><button class="danger" style="width:100%" onclick="resetMonth()">Reset this month</button></div>
-</div>
-
+<div class="card balance"><div class="label">MONEY LEFT</div><div class="big" id="balance">$0</div><div class="status" id="saved">✓ Saved</div><div class="stats"><div class="stat"><b id="income">$0</b><span>Money in</span></div><div class="stat"><b id="salaryD">$0</b><span>Base salary</span></div><div class="stat"><b id="extraD">$0</b><span>OT + extra</span></div><div class="stat"><b id="out">$0</b><span>Money out</span></div></div></div>
+<div class="card"><h2>🥧 Where My Money Goes</h2><div class="piebox"><div class="pie" id="pie"><div class="hole"><div><div id="allocated">$0</div><span class="label">allocated</span></div></div></div></div><div id="legend" class="legend"></div></div>
+<div class="card"><h2>✨ Quick Entry</h2><div class="tabs"><button id="spendTab" class="tab active" onclick="setMode('spend')">− Spend</button><button id="receiveTab" class="tab" onclick="setMode('receive')">＋ Receive</button></div><div style="height:10px"></div><div class="form"><select id="category"></select><select id="subcat"></select><input id="amount" type="number" min="0" placeholder="Amount (GYD)"><input id="desc" placeholder="Optional note — e.g. KFC, lunch at work"><button id="action" class="spend full" onclick="addTx()">− Record spending</button></div><div class="quick"><button onclick="quick('Transportation','Taxi')">🚕 Taxi</button><button onclick="quick('Food','Meal')">🍽️ Meal</button><button onclick="quick('Food','Snack')">🍿 Snack</button><button onclick="quick('Mobile Data','Mobile Data')">📱 Data</button><button onclick="quick('Beauty','Hair')">💄 Beauty</button><button onclick="showScreen('savings')">🎯 Savings</button></div></div>
+<div class="card"><h2>🧾 Recent Activity</h2><div id="recent"></div><button class="soft" style="width:100%" onclick="showScreen('activity')">View all activity</button></div>
+</section>
+<section id="activity" class="screen"><div class="card"><h2>🧾 Activity</h2><div class="grid"><select id="filterCat"></select><input id="searchTx" placeholder="Search transactions"></div><div id="activityList"></div></div></section>
+<section id="savings" class="screen"><div class="card"><h2>🎯 Savings Goals</h2><div id="goals"></div><hr><div class="form"><input id="goalName" placeholder="Savings goal"><input id="goalTarget" type="number" placeholder="Target (GYD)"><button class="primary full" onclick="addGoal()">🌸 Add goal</button></div></div></section>
+<section id="insights" class="screen"><div class="card"><h2>📊 Spending by Category</h2><div id="catsBox"></div></div><div class="card"><h2>📅 Compare Months</h2><div class="grid"><select id="cm"></select><select id="cy"></select></div><div id="compare" style="margin-top:10px"></div></div><div class="card"><h2>🗓️ Saved Month History</h2><div id="history"></div></div></section>
+<section id="more" class="screen">
+<div class="card"><h2>💰 Money In</h2><div class="grid"><div><span class="label">Base salary</span><input id="salary" type="number"></div><div><span class="label">Overtime</span><input id="overtime" type="number"></div></div><div class="form" style="margin-top:9px"><input id="extraName" placeholder="Birthday, brother, Christmas..."><input id="extraAmount" type="number" placeholder="Amount (GYD)"><button class="receive full" onclick="addExtra()">＋ Add extra money</button></div></div>
+<div class="card"><h2>☁️ Backup & Restore</h2><p class="note">Export a private copy to Files → iCloud Drive before clearing browser data or changing phones.</p><div class="grid"><button class="primary" onclick="exportBackup()">⬇️ Export Backup</button><button class="soft" onclick="restoreFile.click()">⬆️ Restore Backup</button></div><input id="restoreFile" type="file" accept=".json,application/json" style="display:none" onchange="restoreBackup(event)"><p id="backupStatus" class="note"></p></div>
+<div class="card"><h2>🧹 Data Management</h2><p class="note">Old budget records are tiny, but you can remove months or entire years when you no longer need them. Back up first.</p><div id="dataYears"></div></div>
+<div class="card"><h2>💜 Flow & Rules</h2><p class="note">Money In = salary + overtime + extra income + received money. Money Out = spending + money placed into savings. Your balance updates automatically. Notes are optional. Every change is saved immediately on this device.</p></div>
+<div class="card"><h2>🛡️ Data Safety</h2><p class="note" id="health"></p><button class="danger" style="width:100%" onclick="resetMonth()">Reset current month</button></div>
+</section></main></div>
+<div class="bottom"><nav class="nav"><button class="active" data-screen="home" onclick="showScreen('home')"><b>🏠</b>Home</button><button data-screen="activity" onclick="showScreen('activity')"><b>🧾</b>Activity</button><button data-screen="savings" onclick="showScreen('savings')"><b>🎯</b>Savings</button><button data-screen="insights" onclick="showScreen('insights')"><b>📊</b>Insights</button><button data-screen="more" onclick="showScreen('more')"><b>•••</b>More</button></nav></div>
+<div id="drawer" class="drawer"><div class="shade" onclick="toggleDrawer(false)"></div><aside class="panel"><div class="row"><div><div class="brand">N•O•H</div><div class="tag">Your money, organized 🌸</div></div><button onclick="toggleDrawer(false)">✕</button></div><div class="menu"><button onclick="menuGo('home')">🏠 Dashboard</button><button onclick="menuGo('activity')">🧾 Activity</button><button onclick="menuGo('savings')">🎯 Savings Goals</button><button onclick="menuGo('insights')">📊 Insights & Months</button><button onclick="menuGo('more')">⚙️ Money, Backup & Data</button></div></aside></div><div id="toast" class="toast">Saved ✓</div>
 <script>
-const KEY='noh-budget-data-v3', OLD=['nelli-budget-v2','nelli-money-tracker-v1'];
+const KEY='noh-budget-data-v3',REC='noh-budget-recovery-v4',STAMP='noh-budget-last-backup';
 const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const cats=['Food','Transportation','Shopping','Beauty','Entertainment','Internet','Loans','Household Contribution','Subscriptions','iCloud Storage','Medication','Mobile Data','Other'];
 const subs={Food:['Meal','Breakfast','Lunch','Dinner','Drink','Snack','Groceries','Takeout','Dessert','Other Food'],Transportation:['Taxi','Bus','Fuel','Parking','Other Transportation'],Shopping:['Clothes','Shoes','Home','Electronics','Other Shopping'],Beauty:['Skincare','Hair','Nails','Makeup','Other Beauty'],Entertainment:['BTS Concert','Going Out','Movies','Events','Music','Other Entertainment'],Internet:['Internet','Home Internet','Other Internet'],Loans:['Car Loan','House Loan','Personal Loan','Other Loan'],'Household Contribution':['Mommy','Household','Utilities','Other Contribution'],Subscriptions:['Netflix','Hulu','HBO / Max','Streaming','Other Subscription'],'iCloud Storage':['iCloud Storage'],Medication:['Medication','Pharmacy','Other Medication'],'Mobile Data':['Mobile Data','Phone Data','Other Mobile Data'],Other:['General','Other']};
 const colors=['#ef9b51','#55a9e8','#ed72a4','#62bd7a','#e9b949','#8d6aa8','#c66c8c','#9a83ba','#6fb4a0','#b68bd0','#d87c92','#7198c7','#aaa1ad'];
-let m=new Date().getMonth(),y=new Date().getFullYear(),cm0=m,cy0=y,mode='spend',db=load();
-function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
-function fresh(){return{salary:133135,overtime:0,tx:[],extras:[],goals:[{id:id(),name:'BTS Ticket',target:10000,saved:0},{id:id(),name:'Future Goal',target:0,saved:0},{id:id(),name:'Keisha Cole Ticket',target:20000,saved:0}]}}
-function normalize(z){z=z||fresh();z.salary=Number(z.salary??133135);z.overtime=Number(z.overtime||0);z.tx=Array.isArray(z.tx)?z.tx:[];z.extras=Array.isArray(z.extras)?z.extras:[];z.goals=Array.isArray(z.goals)?z.goals:[];return z}
-function migrate(){let out={},ok=false;for(const k0 of OLD){let raw=localStorage.getItem(k0);if(!raw)continue;try{let old=JSON.parse(raw);for(const k of Object.keys(old)){if(!/^\d{4}-\d{2}$/.test(k))continue;let o=old[k],z=fresh();z.salary=Number(o.salary)||133135;(o.tx||[]).forEach(t=>{let a=Number(t.amount)||0;z.tx.push({id:id(),desc:t.desc||'Entry',amount:a,cat:cats.includes(t.cat)?t.cat:'Other',sub:'General'})});out[k]=z;ok=true}}catch(e){}}if(ok)localStorage.setItem(KEY,JSON.stringify(out));return out}
-function load(){try{let s=localStorage.getItem(KEY);if(s)return JSON.parse(s)}catch(e){}return migrate()}
-function save(){localStorage.setItem(KEY,JSON.stringify(db))}
-function key(){return y+'-'+String(m+1).padStart(2,'0')}
-function cur(){if(!db[key()])db[key()]=fresh();return normalize(db[key()])}
-function fmt(n){return new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(Math.round(n))}
-function totals(q){let spend={};cats.forEach(c=>spend[c]=0);q.tx.filter(t=>t.amount<0).forEach(t=>spend[t.cat]+=(-t.amount));let extra=q.extras.reduce((a,e)=>a+e.amount,0),recv=q.tx.filter(t=>t.amount>0).reduce((a,t)=>a+t.amount,0),spent=q.tx.filter(t=>t.amount<0).reduce((a,t)=>a-t.amount,0),saved=q.goals.reduce((a,g)=>a+g.saved,0);return{in:q.salary+q.overtime+extra+recv,spend,saved,spent,out:saved+spent,left:q.salary+q.overtime+extra+recv-saved-spent}}
-function setMode(v){mode=v;spendTab.className='tab '+(v==='spend'?'active':'');receiveTab.className='tab '+(v==='receive'?'active':'');action.className=(v==='spend'?'spend':'receive')+' full';action.textContent=v==='spend'?'➖ Record spending':'➕ Add money received'}
-function updateSubs(){subcat.innerHTML=(subs[category.value]||['General']).map(x=>`<option>${x}</option>`).join('')}
-function pickCategory(c){category.value=c;updateSubs();subcat.focus()}
-function addTx(){let a=Number(amount.value),d=desc.value.trim();if(!d||a<=0)return alert('Enter a description and amount.');cur().tx.push({id:id(),desc:d,amount:mode==='spend'?-a:a,cat:category.value,sub:subcat.value});save();desc.value='';amount.value='';render()}
-function addExtra(){let n=extraName.value.trim()||'Extra money',a=Number(extraAmount.value);if(a<=0)return alert('Enter an amount.');cur().extras.push({id:id(),name:n,amount:a});save();extraName.value='';extraAmount.value='';render()}
-function addGoal(){let n=goalName.value.trim(),t=Number(goalTarget.value)||0;if(!n)return alert('Enter a goal.');cur().goals.push({id:id(),name:n,target:t,saved:0});save();goalName.value='';goalTarget.value='';render()}
-function saveIncome(){cur().salary=Math.max(0,Number(salary.value));cur().overtime=Math.max(0,Number(overtime.value));save();render()}
-salary.onchange=saveIncome;overtime.onchange=saveIncome;
-function saveGoal(i){let g=cur().goals.find(x=>x.id===i),a=Number(prompt('Amount to add to '+g.name,0));if(a>0){g.saved+=a;save();render()}}
-function editGoal(i){let g=cur().goals.find(x=>x.id===i),n=prompt('Goal name',g.name);if(n===null)return;let t=prompt('Target amount',g.target);if(t!==null&&n.trim()){g.name=n.trim();g.target=Math.max(0,Number(t)||0);save();render()}}
-function delGoal(i){if(confirm('Remove this goal?')){cur().goals=cur().goals.filter(x=>x.id!==i);save();render()}}
-function delTx(i){cur().tx=cur().tx.filter(x=>x.id!==i);save();render()}
-function resetMonth(){if(confirm('Reset '+months[m]+' '+y+'?')){delete db[key()];save();render()}}
-function monthData(yy,mm){let k=yy+'-'+String(mm+1).padStart(2,'0');return normalize(db[k]||fresh())}
-function render(){let q=cur(),t=totals(q);salary.value=q.salary;overtime.value=q.overtime;balance.textContent='$'+fmt(t.left);income.textContent='$'+fmt(t.in);salaryD.textContent='$'+fmt(q.salary);extraD.textContent='$'+fmt(q.overtime+q.extras.reduce((a,e)=>a+e.amount,0));out.textContent='$'+fmt(t.out);
-let slices=[];cats.forEach((c,i)=>{if(t.spend[c])slices.push({n:c,v:t.spend[c],c:colors[i]})});q.goals.forEach((g,i)=>{if(g.saved)slices.push({n:'Savings · '+g.name,v:g.saved,c:colors[(i+3)%colors.length]})});if(t.left>0)slices.push({n:'Money left',v:t.left,c:'#d8c9df'});let total=slices.reduce((a,s)=>a+s.v,0),pos=0,st=[];slices.forEach(s=>{let p=total?s.v/total*100:0;st.push(`${s.c} ${pos}% ${pos+p}%`);pos+=p});pie.style.background=total?'conic-gradient('+st.join(',')+')':'#eadff0';alloc.textContent='$'+fmt(t.out);legend.innerHTML=slices.map(s=>`<div class="leg"><i class="dot" style="background:${s.c}"></i>${s.n}: $${fmt(s.v)}</div>`).join('')||'<span class="note">Nothing recorded yet.</span>';
-cats.innerHTML=cats.map(c=>`<div class="category"><span>${c}</span><b>$${fmt(t.spend[c])}</b></div>`).join('');
-goals.innerHTML=q.goals.map(g=>{let p=g.target?Math.min(100,g.saved/g.target*100):0;return`<div class="goal"><div class="row" style="padding:0;border:0"><div><div class="name">🌸 ${g.name}</div><div class="meta">$${fmt(g.saved)} saved${g.target?' of $'+fmt(g.target):''}</div></div><div class="actions"><button class="primary tiny" onclick="saveGoal('${g.id}')">+ Save</button><button class="soft tiny" onclick="editGoal('${g.id}')">Edit</button><button class="danger tiny" onclick="delGoal('${g.id}')">×</button></div></div><div class="progress"><div class="bar" style="width:${p}%"></div></div></div>`}).join('');
-let rows=q.extras.map(e=>`<div class="row"><div><div class="name">✨ ${e.name}</div><div class="meta">Extra money</div></div><span class="plus">+$${fmt(e.amount)}</span></div>`).join('');rows+=q.tx.slice().reverse().map(t=>`<div class="row"><div><div class="name">${t.desc}</div><div class="meta">${t.cat} · ${t.sub}</div></div><div class="actions"><span class="${t.amount>0?'plus':'minus'}">${t.amount>0?'+':'−'}$${fmt(Math.abs(t.amount))}</span><button class="soft tiny" onclick="delTx('${t.id}')">×</button></div></div>`).join('');activity.innerHTML=rows||'<span class="note">No activity this month.</span>';renderCompare();renderHistory()}
-function renderCompare(){let a=totals(cur()),b=totals(monthData(cy0,cm0));compare.innerHTML=`<div class="compare"><div><b>${months[m]} ${y}</b>Money out<br>$${fmt(a.out)}</div><div><b>${months[cm0]} ${cy0}</b>Money out<br>$${fmt(b.out)}</div><div><b>Difference</b>${a.out>=b.out?'+':'−'}$${fmt(Math.abs(a.out-b.out))}<br>${a.out>=b.out?'more':'less'}</div></div>`}
-function renderHistory(){let ks=Object.keys(db).sort().reverse();history.innerHTML=ks.map(k=>{let [yy,mm]=k.split('-').map(Number),t=totals(db[k]);return`<div class="row"><div><b>${months[mm-1]} ${yy}</b><div class="meta">In $${fmt(t.in)} · Out $${fmt(t.out)} · Saved $${fmt(t.saved)}</div></div><b class="${t.left>=0?'plus':'minus'}">$${fmt(t.left)} left</b></div>`}).join('')||'<span class="note">Saved months appear here.</span>'}
-function init(){category.innerHTML=cats.map(x=>`<option>${x}</option>`).join('');category.onchange=updateSubs;updateSubs();month.innerHTML=months.map((x,i)=>`<option value="${i}">${x}</option>`).join('');year.innerHTML=Array.from({length:15},(_,i)=>2024+i).map(x=>`<option>${x}</option>`).join('');cm.innerHTML=months.map((x,i)=>`<option value="${i}">${x}</option>`).join('');cy.innerHTML=Array.from({length:15},(_,i)=>2024+i).map(x=>`<option>${x}</option>`).join('');month.value=m;year.value=y;cm.value=cm0;cy.value=cy0;month.onchange=()=>{m=+month.value;render()};year.onchange=()=>{y=+year.value;render()};cm.onchange=()=>{cm0=+cm.value;renderCompare()};cy.onchange=()=>{cy0=+cy.value;renderCompare()};render()}
+let d=new Date(),m=d.getMonth(),y=d.getFullYear(),cmpM=m,cmpY=y,mode='spend',db={};
+const $=id=>document.getElementById(id),uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2);
+function fresh(){return{salary:133135,overtime:0,tx:[],extras:[],goals:[{id:uid(),name:'BTS Ticket',target:10000,saved:0},{id:uid(),name:'Future Goal',target:0,saved:0},{id:uid(),name:'Keisha Cole Ticket',target:20000,saved:0}]}}
+function norm(z){z=z||fresh();z.salary=Number(z.salary??133135);z.overtime=Number(z.overtime||0);z.tx=Array.isArray(z.tx)?z.tx:[];z.extras=Array.isArray(z.extras)?z.extras:[];z.goals=Array.isArray(z.goals)?z.goals:[];return z}
+function load(){try{let s=localStorage.getItem(KEY);if(s)return JSON.parse(s)}catch(e){}try{let r=JSON.parse(localStorage.getItem(REC)||'null');if(r&&r.data)return r.data}catch(e){}return{}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db));localStorage.setItem(REC,JSON.stringify({savedAt:new Date().toISOString(),data:db}));$('saved').textContent='✓ Saved '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});toast('Saved ✓');return true}catch(e){alert('This change could not be saved. Export a backup before continuing.');return false}}
+function k(){return y+'-'+String(m+1).padStart(2,'0')} function cur(){if(!db[k()])db[k()]=fresh();return norm(db[k()])}
+function fmt(n){return new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(Math.round(Number(n)||0))}
+function totals(q){let sp={};cats.forEach(c=>sp[c]=0);q.tx.forEach(t=>{if(+t.amount<0)sp[t.cat]=(sp[t.cat]||0)-Number(t.amount)});let ex=q.extras.reduce((a,e)=>a+Number(e.amount||0),0),rv=q.tx.filter(t=>+t.amount>0).reduce((a,t)=>a+Number(t.amount),0),spent=q.tx.filter(t=>+t.amount<0).reduce((a,t)=>a-Number(t.amount),0),sv=q.goals.reduce((a,g)=>a+Number(g.saved||0),0),inn=+q.salary+ +q.overtime+ex+rv;return{in:inn,spend:sp,saved:sv,out:spent+sv,left:inn-spent-sv}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function toast(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(()=>$('toast').classList.remove('show'),1100)}
+function toggleDrawer(v){$('drawer').classList.toggle('open',v)} function menuGo(s){showScreen(s)}
+function showScreen(s){document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===s));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.screen===s));toggleDrawer(false);render();scrollTo({top:0,behavior:'smooth'})}
+function setMode(v){mode=v;$('spendTab').className='tab '+(v==='spend'?'active':'');$('receiveTab').className='tab '+(v==='receive'?'active':'');$('action').className=(v==='spend'?'spend':'receive')+' full';$('action').textContent=v==='spend'?'− Record spending':'＋ Add money received'}
+function updateSubs(){$('subcat').innerHTML=(subs[$('category').value]||['General']).map(x=>`<option>${x}</option>`).join('')}
+function quick(c,s){$('category').value=c;updateSubs();$('subcat').value=s;$('amount').focus()}
+function addTx(){let a=+$('amount').value;if(a<=0)return alert('Enter an amount.');let c=$('category').value,s=$('subcat').value,n=$('desc').value.trim()||`${c} • ${s}`;cur().tx.push({id:uid(),desc:n,amount:mode==='spend'?-a:a,cat:c,sub:s,at:new Date().toISOString()});if(save()){$('amount').value='';$('desc').value='';render()}}
+function editTx(i){let t=cur().tx.find(x=>x.id===i);if(!t)return;let a=prompt('Amount (GYD)',Math.abs(t.amount));if(a===null||+a<=0)return;let n=prompt('Description',t.desc);if(n===null)return;t.amount=t.amount<0?-Number(a):Number(a);t.desc=n.trim()||`${t.cat} • ${t.sub}`;save();render()}
+function delTx(i){if(confirm('Delete this transaction?')){cur().tx=cur().tx.filter(x=>x.id!==i);save();render()}}
+function undoLast(){if(!cur().tx.length)return;let t=cur().tx.at(-1);if(confirm(`Undo "${t.desc}"?`)){cur().tx.pop();save();render()}}
+function addExtra(){let a=+$('extraAmount').value;if(a<=0)return alert('Enter an amount.');cur().extras.push({id:uid(),name:$('extraName').value.trim()||'Extra money',amount:a,at:new Date().toISOString()});save();$('extraName').value='';$('extraAmount').value='';render()}
+function addGoal(){let n=$('goalName').value.trim(),t=+$('goalTarget').value||0;if(!n)return alert('Enter a savings goal.');cur().goals.push({id:uid(),name:n,target:t,saved:0});save();$('goalName').value='';$('goalTarget').value='';render()}
+function goalAdd(i,sign){let g=cur().goals.find(x=>x.id===i),a=+prompt(sign>0?'Amount to add':'Amount to take out',0);if(a>0){g.saved=Math.max(0,g.saved+sign*a);save();render()}}
+function editGoal(i){let g=cur().goals.find(x=>x.id===i),n=prompt('Goal name',g.name);if(n===null)return;let t=prompt('Target amount',g.target);if(t!==null&&n.trim()){g.name=n.trim();g.target=Math.max(0,+t||0);save();render()}}
+function monthData(yy,mm){return norm(db[yy+'-'+String(mm+1).padStart(2,'0')]||fresh())}
+function txHTML(a){if(!a.length)return'<div class="empty">Nothing recorded yet.</div>';return a.slice().reverse().map(t=>`<div class="row"><div><div class="name">${esc(t.desc)}</div><div class="meta">${esc(t.cat)} • ${esc(t.sub||'')}${t.at?' • '+new Date(t.at).toLocaleDateString():''}</div></div><div><div class="money">${t.amount<0?'−':'+'}$${fmt(Math.abs(t.amount))}</div><button class="soft tiny" onclick="editTx('${t.id}')">Edit</button> <button class="danger tiny" onclick="delTx('${t.id}')">×</button></div></div>`).join('')}
+function saveIncome(){cur().salary=Math.max(0,+$('salary').value||0);cur().overtime=Math.max(0,+$('overtime').value||0);save();render()}
+function render(){
+ let q=cur(),t=totals(q);$('balance').textContent='$'+fmt(t.left);$('income').textContent='$'+fmt(t.in);$('salaryD').textContent='$'+fmt(q.salary);$('extraD').textContent='$'+fmt(q.overtime+q.extras.reduce((a,e)=>a+(+e.amount||0),0));$('out').textContent='$'+fmt(t.out);$('salary').value=q.salary;$('overtime').value=q.overtime;
+ let sl=[];cats.forEach((c,i)=>{if(t.spend[c])sl.push({n:c,v:t.spend[c],c:colors[i]})});q.goals.forEach((g,i)=>{if(g.saved)sl.push({n:'Savings • '+g.name,v:g.saved,c:colors[(i+3)%colors.length]})});if(t.left>0)sl.push({n:'Money left',v:t.left,c:'#d8c9df'});let total=sl.reduce((a,s)=>a+s.v,0),p=0,st=[];sl.forEach(s=>{let x=total?s.v/total*100:0;st.push(`${s.c} ${p}% ${p+x}%`);p+=x});$('pie').style.background=total?'conic-gradient('+st.join(',')+')':'#eadff0';$('allocated').textContent='$'+fmt(t.out);$('legend').innerHTML=sl.map(s=>`<div class="leg"><i class="dot" style="background:${s.c}"></i>${esc(s.n)}: $${fmt(s.v)}</div>`).join('')||'<span class="note">Nothing recorded yet.</span>';
+ $('recent').innerHTML=txHTML(q.tx.slice(-4));let term=$('searchTx').value.toLowerCase(),fc=$('filterCat').value;$('activityList').innerHTML=txHTML(q.tx.filter(x=>(fc==='All'||x.cat===fc)&&(!term||(`${x.desc} ${x.cat} ${x.sub}`).toLowerCase().includes(term))))+(q.tx.length?'<button class="soft" style="width:100%;margin-top:8px" onclick="undoLast()">↶ Undo last transaction</button>':'');
+ $('goals').innerHTML=q.goals.map(g=>{let p=g.target?Math.min(100,g.saved/g.target*100):0;return`<div class="goal"><div class="row" style="padding:0;border:0"><div><div class="name">🌸 ${esc(g.name)}</div><div class="meta">$${fmt(g.saved)} saved${g.target?' of $'+fmt(g.target):''}</div></div><button class="soft tiny" onclick="editGoal('${g.id}')">Edit</button></div><div class="progress"><div class="bar" style="width:${p}%"></div></div><div class="grid"><button class="primary tiny" onclick="goalAdd('${g.id}',1)">＋ Save</button><button class="soft tiny" onclick="goalAdd('${g.id}',-1)">− Take out</button></div></div>`}).join('');
+ $('catsBox').innerHTML=cats.map(c=>`<div class="row"><span>${c}</span><b>$${fmt(t.spend[c])}</b></div>`).join('');
+ let b=totals(monthData(cmpY,cmpM)),dif=t.out-b.out;$('compare').innerHTML=`<div class="compare"><div><b>${months[m]} ${y}</b><br>$${fmt(t.out)} out</div><div><b>${months[cmpM]} ${cmpY}</b><br>$${fmt(b.out)} out</div><div><b>Difference</b><br>${dif>=0?'+':''}$${fmt(dif)}</div></div>`;
+ let keys=Object.keys(db).filter(x=>/^\d{4}-\d{2}$/.test(x)).sort().reverse();$('history').innerHTML=keys.length?keys.map(x=>{let [yy,mm]=x.split('-').map(Number),z=norm(db[x]),tt=totals(z);return`<div class="row"><div><b>${months[mm-1]} ${yy}</b><div class="meta">${z.tx.length} transactions</div></div><b>$${fmt(tt.out)} out</b></div>`}).join(''):'<div class="empty">No saved months yet.</div>';
+ let ys=[...new Set(keys.map(x=>x.slice(0,4)))].sort().reverse();$('dataYears').innerHTML=ys.length?ys.map(yy=>`<div class="yearbox"><div class="row" style="padding:0;border:0"><div><b>${yy}</b><div class="meta">${keys.filter(k=>k.startsWith(yy+'-')).length} saved month(s)</div></div><button class="danger tiny" onclick="deleteYear('${yy}')">Delete year</button></div><div style="margin-top:8px">${keys.filter(k=>k.startsWith(yy+'-')).map(x=>{let mm=+x.slice(5);return`<button class="soft tiny" style="margin:2px" onclick="deleteMonth('${x}')">Delete ${months[mm-1]}</button>`}).join('')}</div></div>`).join(''):'<div class="empty">No old data to manage yet.</div>';
+ $('backupStatus').textContent=localStorage.getItem(STAMP)?'Last backup: '+new Date(localStorage.getItem(STAMP)).toLocaleString():'Last backup: Never on this browser';$('health').textContent=`${q.tx.length} transactions and ${q.goals.length} savings goals in ${months[m]} ${y}. Local recovery copy is enabled.`;
+}
+function deleteMonth(x){if(x===k())return alert('Use Reset current month for the month you are currently viewing.');if(confirm('Delete '+x+' from this device? Make a backup first if you may need it again.')){delete db[x];save();render()}}
+function deleteYear(yy){let phrase='DELETE '+yy;if(prompt(`This removes every saved month in ${yy} from this device.\nType exactly: ${phrase}`)===phrase){Object.keys(db).filter(k=>k.startsWith(yy+'-')).forEach(k=>delete db[k]);save();render()}}
+function resetMonth(){let ph=`RESET ${months[m].toUpperCase()} ${y}`;if(prompt(`This clears ${months[m]} ${y}. Export a backup first.\nType exactly: ${ph}`)===ph){delete db[k()];save();render()}}
+function exportBackup(){try{let p={app:'N•O•H Budget Tracker',backupFormat:2,createdAt:new Date().toISOString(),storageKey:KEY,data:db},b=new Blob([JSON.stringify(p,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='NOH_Budget_Backup_'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);localStorage.setItem(STAMP,new Date().toISOString());render();alert('Backup created. Save it privately in Files → iCloud Drive.')}catch(e){alert('Backup could not be created. Your existing data was not changed.')}}
+function restoreBackup(ev){let f=ev.target.files?.[0];ev.target.value='';if(!f)return;let r=new FileReader();r.onload=()=>{try{let p=JSON.parse(r.result);if(!p||p.app!=='N•O•H Budget Tracker'||![1,2].includes(p.backupFormat)||!p.data)return alert('Not a valid N•O•H backup. Nothing changed.');if(confirm('Restore this backup? Current browser data will be replaced.')){db=p.data;save();render();alert('Backup restored successfully.')}}catch(e){alert('Backup could not be read. Nothing changed.')}};r.readAsText(f)}
+function init(){db=load();$('month').innerHTML=months.map((x,i)=>`<option value="${i}">${x}</option>`).join('');let yy=[];for(let a=y-6;a<=y+5;a++)yy.push(a);$('year').innerHTML=yy.map(x=>`<option>${x}</option>`).join('');$('cm').innerHTML=$('month').innerHTML;$('cy').innerHTML=$('year').innerHTML;$('month').value=m;$('year').value=y;$('cm').value=cmpM;$('cy').value=cmpY;$('category').innerHTML=cats.map(x=>`<option>${x}</option>`).join('');$('filterCat').innerHTML=['All',...cats].map(x=>`<option>${x}</option>`).join('');updateSubs();$('month').onchange=()=>{m=+$('month').value;render()};$('year').onchange=()=>{y=+$('year').value;render()};$('cm').onchange=()=>{cmpM=+$('cm').value;render()};$('cy').onchange=()=>{cmpY=+$('cy').value;render()};$('category').onchange=updateSubs;$('salary').onchange=saveIncome;$('overtime').onchange=saveIncome;$('searchTx').oninput=render;$('filterCat').onchange=render;document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')save()});render()}
 init();
-
-function backupStamp(){
-  try{return localStorage.getItem('noh-budget-last-backup')||''}catch(e){return ''}
-}
-function showBackupStamp(){
-  const el=document.getElementById('backupStatus'); if(!el)return;
-  const s=backupStamp();
-  el.textContent=s?'Last backup: '+new Date(s).toLocaleString():'Last backup: Never on this browser';
-}
-function exportBackup(){
-  try{
-    const raw=localStorage.getItem('noh-budget-data-v3');
-    if(!raw){alert('There is no N•O•H budget data to back up yet.');return}
-    const parsed=JSON.parse(raw);
-    const payload={
-      app:'N•O•H Budget Tracker',
-      backupFormat:1,
-      createdAt:new Date().toISOString(),
-      storageKey:'noh-budget-data-v3',
-      data:parsed
-    };
-    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
-    const a=document.createElement('a');
-    const d=new Date(), pad=n=>String(n).padStart(2,'0');
-    const filename=`NOH_Budget_Backup_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}.json`;
-    a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click();
-    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);
-    const stamp=new Date().toISOString();
-    localStorage.setItem('noh-budget-last-backup',stamp); showBackupStamp();
-    alert('Backup created. In the iPhone save/share screen, choose Save to Files and select iCloud Drive. Keep the file private.');
-  }catch(e){alert('Backup could not be created. Your existing budget data was not changed.')}
-}
-function restoreBackup(ev){
-  const file=ev.target.files&&ev.target.files[0]; ev.target.value='';
-  if(!file)return;
-  const reader=new FileReader();
-  reader.onload=()=>{
-    try{
-      const payload=JSON.parse(reader.result);
-      if(!payload || payload.app!=='N•O•H Budget Tracker' || payload.backupFormat!==1 || payload.storageKey!=='noh-budget-data-v3' || !payload.data){
-        alert('This is not a valid N•O•H Budget Tracker backup. Nothing was changed.'); return;
-      }
-      const when=payload.createdAt?new Date(payload.createdAt).toLocaleString():'unknown date';
-      if(!confirm(`Restore the N•O•H backup from ${when}? This will replace the budget data currently stored in this browser.`))return;
-      localStorage.setItem('noh-budget-data-v3',JSON.stringify(payload.data));
-      alert('Backup restored successfully. N•O•H will reload now.');
-      location.reload();
-    }catch(e){alert('The backup file could not be read. Nothing was changed.')}
-  };
-  reader.onerror=()=>alert('The backup file could not be opened. Nothing was changed.');
-  reader.readAsText(file);
-}
-
-showBackupStamp();
 </script>
+<script>if('serviceWorker'in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}</script>
 </body></html>
