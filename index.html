@@ -81,7 +81,22 @@ function save(){localStorage.setItem(KEY,JSON.stringify(db))}
 function current(){if(!db[k()]){db[k()]=fresh();save()}return norm(db[k()])}
 function money(n){return new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n||0))}
 function txAmount(t){return Number(t.amount||0)}
-function totals(q){q=norm(q);let spend=q.tx.filter(t=>txAmount(t)<0).reduce((a,t)=>a-txAmount(t),0),recv=q.tx.filter(t=>txAmount(t)>0).reduce((a,t)=>a+txAmount(t),0),extra=q.extras.reduce((a,e)=>a+Number(e.amount||0),0),saved=q.goals.reduce((a,g)=>a+Number(g.saved||0),0);return{spend,recv,extra,saved,in:q.openingBalance+q.salary+q.overtime+recv,left:q.openingBalance+q.salary+q.overtime+recv+extra-spend-saved}}
+function savingsStats(q,monthKey=k()){
+q=norm(q);
+let saved=q.goals.reduce((a,g)=>a+Number(g.saved||0),0),openingSaved=0;
+let parts=monthKey.split('-').map(Number),pd=new Date(parts[0],parts[1]-2,1),pk=pd.getFullYear()+'-'+String(pd.getMonth()+1).padStart(2,'0'),prev=db[pk]?norm(db[pk]):null;
+q.goals.forEach(g=>{
+ let base=Number(g.openingSaved);
+ if(!Number.isFinite(base)){
+   let pg=prev&&prev.goals.find(x=>String(x.name||'').trim().toLowerCase()===String(g.name||'').trim().toLowerCase());
+   base=pg?Math.min(Number(g.saved||0),Number(pg.saved||0)):0;
+ }
+ openingSaved+=Math.max(0,base||0);
+});
+let contributed=Math.max(0,saved-openingSaved);
+return{saved,openingSaved,contributed};
+}
+function totals(q){q=norm(q);let spend=q.tx.filter(t=>txAmount(t)<0).reduce((a,t)=>a-txAmount(t),0),recv=q.tx.filter(t=>txAmount(t)>0).reduce((a,t)=>a+txAmount(t),0),extra=q.extras.reduce((a,e)=>a+Number(e.amount||0),0),ss=savingsStats(q);return{spend,recv,extra,saved:ss.saved,openingSaved:ss.openingSaved,newSaved:ss.contributed,in:q.openingBalance+q.salary+q.overtime+recv,left:q.openingBalance+q.salary+q.overtime+recv+extra-spend-ss.contributed}}
 function stamp(t){let d=new Date(t);return d.toLocaleDateString([], {month:'short',day:'numeric',year:'numeric'})+' • '+d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}
 function go(id,b){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render()}
 function setMode(v){mode=v;spendTab.className=v==='spend'?'primary':'soft';receiveTab.className=v==='receive'?'primary':'soft';recordBtn.textContent=v==='spend'?'Record spending':'Add money received';recordBtn.className=(v==='spend'?'primary':'soft')+' full'}
@@ -162,7 +177,7 @@ function restoreBackup(ev){
 function renderGoals(list,type){let gs=current().goals.filter(g=>(g.type||'short')===type);list.innerHTML=gs.length?gs.map(g=>{let p=g.target?Math.min(100,g.saved/g.target*100):0,sug=suggested(g);return `<div class="row"><div style="flex:1"><b>${g.name}</b><div class="meta">$${money(g.saved)} saved${g.target?' of $'+money(g.target):''}${g.due?' • due '+new Date(g.due+'T12:00:00').toLocaleDateString([], {month:'short',day:'numeric',year:'numeric'}):''}</div>${type==='scheduled'?`<div class="meta">Suggested monthly: <b>$${money(sug)}</b> — you choose what to actually add.</div>`:''}<div class="progress"><div class="bar" style="width:${p}%"></div></div><button class="primary tiny" onclick="contribute('${g.id}')">+ Save</button> <button class="soft tiny" onclick="editGoal('${g.id}')">Edit</button> <button class="danger tiny" onclick="deleteGoal('${g.id}')">Delete</button></div></div>`}).join(''):'<div class="meta">No goals here yet.</div>'}
 function render(){
 let q=current(),t=totals(q);heroMonth.textContent=months[m]+' '+y+(q.closed?' • CONFIRMED':'');balance.textContent='$'+money(t.left);moneyIn.textContent='$'+money(t.in);moneyOut.textContent='$'+money(t.spend);extra.textContent='$'+money(t.extra);savedTotal.textContent='$'+money(t.saved);saveGrand.textContent='$'+money(t.saved);goalCount.textContent=q.goals.length;
-rollNote.innerHTML=q.openingFrom?`<b>↪ Money Rolled Over</b><br>$${money(q.openingBalance)} from ${q.openingFrom}`:'<b>↪ Money Rolled Over</b><br>$0.00 — this month has no confirmed rollover.';
+rollNote.innerHTML=q.openingFrom?`<b>↪ Money Rolled Over</b><br>$${money(q.openingBalance)} from ${q.openingFrom}<br><span class="meta">Savings carried forward: $${money(t.openingSaved)}</span>`:`<b>↪ Money Rolled Over</b><br>$0.00 — this month has no confirmed rollover.${t.openingSaved>0?`<br><span class="meta">Savings carried forward: $${money(t.openingSaved)}</span>`:''}`;
 quick.innerHTML=settings.quick.map((x,i)=>`<button onclick="quickPay(${i})">${x.name}<br><b>$${money(x.amount)}</b></button>`).join('');
 quickEdit.innerHTML=settings.quick.map((x,i)=>`<div class="row"><div><b>${x.name}</b><div class="meta">${x.cat}</div></div><div><span class="money">$${money(x.amount)}</span> <button class="soft tiny" onclick="editQuick(${i})">Edit</button></div></div>`).join('');
 let all=[...q.tx.map(x=>({...x,kind:'tx'})),...q.extras.map(x=>({...x,kind:'extra'}))].sort((a,b)=>new Date(b.at||0)-new Date(a.at||0));
