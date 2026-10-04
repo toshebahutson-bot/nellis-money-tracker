@@ -3,6 +3,7 @@
   "short_name": "N\u2022O\u2022H",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f6eafb",
-  "theme_color": "#6f3b91"
+  "background_color": "#f6eff9",
+  "theme_color": "#7c4aa2",
+  "description": "Personal budget, savings and rollover tracker."
 }
