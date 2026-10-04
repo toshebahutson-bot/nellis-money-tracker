@@ -101,8 +101,64 @@ function confirmRollover(){let q=current();if(q.closed)return alert('This month 
 q.closed=true;q.closedAt=new Date().toISOString();q.rolledTo=dest;
 let n=db[dest]?norm(db[dest]):fresh();n.openingBalance=t.left;n.openingFrom=k();n.goals=q.goals.map(g=>({...g,id:uid(),saved:Number(g.saved||0),openingSaved:Number(g.saved||0)}));if(Number(n.salary)===133135)n.salary=0;db[dest]=n;save();alert('Rolled forward successfully. '+months[m]+' is now read-only.');render()}
 function editQuick(i){let q=settings.quick[i],v=prompt(q.name+' default amount',q.amount.toFixed(2));if(v===null)return;q.amount=Math.max(0,Number(v)||0);saveSettings();render()}
-function exportBackup(){let payload={app:'N•O•H Budget Tracker',backupFormat:2,storageKey:KEY,createdAt:new Date().toISOString(),data:db,settings};let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),a=document.createElement('a'),d=new Date();a.href=URL.createObjectURL(blob);a.download=`NOH_Budget_Backup_${d.toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);localStorage.setItem('noh-last-backup',new Date().toISOString());render()}
-function restoreBackup(ev){let f=ev.target.files&&ev.target.files[0];ev.target.value='';if(!f)return;let r=new FileReader();r.onload=()=>{try{let p=JSON.parse(r.result);if(!p||p.app!=='N•O•H Budget Tracker'||!p.data)throw 0;if(!confirm('Restore this backup? Current browser data will be replaced.'))return;db=p.data;if(p.settings)settings=p.settings;save();saveSettings();location.reload()}catch(e){alert('That is not a valid N•O•H backup.')}};r.readAsText(f)}
+function exportBackup(){let payload={app:'N•O•H Budget Tracker',backupFormat:3,storageKey:KEY,createdAt:new Date().toISOString(),data:db,settings};let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),a=document.createElement('a'),d=new Date();a.href=URL.createObjectURL(blob);a.download=`NOH_Budget_Backup_${d.toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);localStorage.setItem('noh-last-backup',new Date().toISOString());render()}
+function restoreBackup(ev){
+  let f=ev.target.files&&ev.target.files[0];
+  ev.target.value='';
+  if(!f)return;
+  let r=new FileReader();
+  r.onload=()=>{
+    try{
+      let p=JSON.parse(r.result), incoming=null, incomingSettings=null;
+
+      // V4/V4.2/V5 exported backup
+      if(p && p.app==='N•O•H Budget Tracker' && p.data && typeof p.data==='object'){
+        incoming=p.data;
+        incomingSettings=p.settings||null;
+      }
+      // Legacy export where the storage key itself was saved
+      else if(p && p['noh-budget-data-v3']){
+        incoming=typeof p['noh-budget-data-v3']==='string'
+          ? JSON.parse(p['noh-budget-data-v3'])
+          : p['noh-budget-data-v3'];
+        incomingSettings=p['noh-budget-v5-settings']||null;
+        if(typeof incomingSettings==='string'){
+          try{incomingSettings=JSON.parse(incomingSettings)}catch(_){}
+        }
+      }
+      // Direct month database export
+      else if(p && Object.keys(p).some(x=>/^\d{4}-\d{2}$/.test(x))){
+        incoming=p;
+      }
+
+      if(!incoming || typeof incoming!=='object')throw new Error('unsupported');
+
+      // Normalize every month without deleting old fields or transactions.
+      Object.keys(incoming).forEach(monthKey=>{
+        if(/^\d{4}-\d{2}$/.test(monthKey)){
+          incoming[monthKey]=norm(incoming[monthKey]);
+        }
+      });
+
+      let months=Object.keys(incoming).filter(x=>/^\d{4}-\d{2}$/.test(x));
+      let txCount=months.reduce((n,x)=>n+(Array.isArray(incoming[x].tx)?incoming[x].tx.length:0),0);
+      let goalCount=months.reduce((n,x)=>n+(Array.isArray(incoming[x].goals)?incoming[x].goals.length:0),0);
+
+      if(!confirm(`Restore backup containing ${months.length} month(s), ${txCount} transaction(s), and ${goalCount} savings goal record(s)?\n\nCurrent V5 browser data will be replaced by this backup.`))return;
+
+      db=incoming;
+      if(incomingSettings && typeof incomingSettings==='object')settings=incomingSettings;
+      save();
+      saveSettings();
+      localStorage.setItem('noh-last-backup',new Date().toISOString());
+      alert('Backup restored successfully. Your previous months, transactions, rollover balance and savings have been imported into V5.');
+      location.reload();
+    }catch(e){
+      alert('This backup could not be restored. No existing V5 data was changed.');
+    }
+  };
+  r.readAsText(f);
+}
 function renderGoals(list,type){let gs=current().goals.filter(g=>(g.type||'short')===type);list.innerHTML=gs.length?gs.map(g=>{let p=g.target?Math.min(100,g.saved/g.target*100):0,sug=suggested(g);return `<div class="row"><div style="flex:1"><b>${g.name}</b><div class="meta">$${money(g.saved)} saved${g.target?' of $'+money(g.target):''}${g.due?' • due '+new Date(g.due+'T12:00:00').toLocaleDateString([], {month:'short',day:'numeric',year:'numeric'}):''}</div>${type==='scheduled'?`<div class="meta">Suggested monthly: <b>$${money(sug)}</b> — you choose what to actually add.</div>`:''}<div class="progress"><div class="bar" style="width:${p}%"></div></div><button class="primary tiny" onclick="contribute('${g.id}')">+ Save</button> <button class="soft tiny" onclick="editGoal('${g.id}')">Edit</button> <button class="danger tiny" onclick="deleteGoal('${g.id}')">Delete</button></div></div>`}).join(''):'<div class="meta">No goals here yet.</div>'}
 function render(){
 let q=current(),t=totals(q);heroMonth.textContent=months[m]+' '+y+(q.closed?' • CONFIRMED':'');balance.textContent='$'+money(t.left);moneyIn.textContent='$'+money(t.in);moneyOut.textContent='$'+money(t.spend);extra.textContent='$'+money(t.extra);savedTotal.textContent='$'+money(t.saved);saveGrand.textContent='$'+money(t.saved);goalCount.textContent=q.goals.length;
