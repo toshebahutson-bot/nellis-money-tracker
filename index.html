@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7c4aa2"><link rel="manifest" href="manifest.json">
-<title>N•O•H Budget · Update 5.6</title>
+<title>N•O•H Budget · Update 5.10</title>
 <style>
 :root{--ink:#35243e;--purple:#75439a;--lav:#eadcf5;--pink:#f6ddeb;--white:#fffdfd;--line:#dfcce8;--green:#39755a;--red:#a83c62;--gold:#a47b39}
 *{box-sizing:border-box}body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f6eff9}
@@ -16,14 +16,14 @@ h2{font:800 22px Georgia,serif;color:#673782;margin:0 0 12px}.stats{display:grid
 button,input,select{font:inherit}button{border:0;border-radius:14px;padding:12px;font-weight:800}.primary{background:var(--purple);color:white}.soft{background:#eee1f3;color:#603c70}.danger{background:#fae7ed;color:#a52f57}.gold{background:#f7efd9;color:#73571d}.tiny{padding:7px 9px;font-size:11px}.full{width:100%}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.field{width:100%;padding:12px;border:1px solid #d9c7e2;border-radius:14px;background:white;color:var(--ink)}.label{display:block;font-size:11px;color:#786d80;margin:5px 0}
 .quick{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.quick button{background:#f5eafa;color:#654174;font-size:11px;min-height:48px}
-.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(760px,100%);display:grid;grid-template-columns:repeat(5,1fr);background:#fffefaef;border-top:1px solid var(--line);padding:7px 5px calc(7px + env(safe-area-inset-bottom));z-index:9;backdrop-filter:blur(16px)}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(760px,100%);display:grid;grid-template-columns:repeat(6,1fr);background:#fffefaef;border-top:1px solid var(--line);padding:7px 5px calc(7px + env(safe-area-inset-bottom));z-index:9;backdrop-filter:blur(16px)}
 .nav button{background:none;color:#796c80;padding:6px 2px;font-size:10px}.nav button b{display:block;font-size:20px}.nav button.active{color:#6f3b91}
 .page{display:none}.page.active{display:block}.row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eee4f1}.row:last-child{border:0}.meta{font-size:10px;color:#847789}.money{font-weight:900;white-space:nowrap}.plus{color:var(--green)}.minus{color:var(--red)}
 .progress{height:9px;background:#eee5f2;border-radius:99px;overflow:hidden;margin:8px 0}.bar{height:100%;background:linear-gradient(90deg,#75439a,#d48cb9)}
 .pie{width:min(310px,80vw);aspect-ratio:1;border-radius:50%;margin:12px auto;position:relative}.pie:after{content:"";position:absolute;inset:29%;border-radius:50%;background:#fff}.legend{font-size:12px}.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:7px}
 .notice{padding:11px;border-radius:13px;background:#f7effa;font-size:12px}.locked{border:1px solid #d8b46a;background:#fff8e8}.tabs{display:flex;gap:7px;margin-bottom:12px}.tabs button{flex:1}.modal{position:fixed;inset:0;background:#26182a88;display:none;align-items:end;z-index:20}.sheet{width:min(760px,100%);margin:auto;background:#fff;border-radius:28px 28px 0 0;padding:18px;max-height:86vh;overflow:auto}.modal.show{display:flex}
 @media(max-width:520px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.quick{grid-template-columns:1fr 1fr}.hero .big{font-size:36px}}
-</style><meta name="noh-update" content="5.7"></head>
+</style><meta name="noh-update" content="5.10"></head>
 <body><div class="app">
 <div class="hero"><h1>N•O•H</h1><div class="script">Budget beautifully ✦ save intentionally</div><div class="small" id="heroMonth"></div><div class="big" id="balance">$0.00</div><div class="small">MONEY LEFT</div></div>
 
@@ -39,6 +39,7 @@ button,input,select{font:inherit}button{border:0;border-radius:14px;padding:12px
 <div class="card"><h2>Recent Activity</h2><div id="recent"></div></div>
 </section>
 
+<section id="notes" class="page"><div class="card"><h2>📝 Monthly Notes & Checklist</h2><p class="mini">Your personal payday planner. Notes never change Money Left, savings or Activity.</p><div class="grid"><div><span class="label">Planned total</span><h2 id="noteTotal">GYD 0.00</h2></div><div><span class="label">Still to complete</span><h2 id="noteRemaining">GYD 0.00</h2></div></div><div id="noteList"></div></div><div class="card"><h2>✦ Add a note</h2><input id="noteName" class="field" maxlength="240" placeholder="e.g. Internet, birthday gift, or a reminder"><input id="noteAmount" class="field" type="number" min="0" step="0.01" placeholder="Optional amount (GYD)" style="margin-top:8px"><button class="primary full" style="margin-top:9px" onclick="nohAddNote()">＋ Add to Notes</button><p class="mini">Emojis are suggested on your phone. No AI service or internet connection is needed.</p></div></section>
 <section id="activity" class="page"><div class="card"><h2>Activity</h2><div id="activityList"></div></div></section>
 
 <section id="savings" class="page"><div class="card"><h2>♡ Savings Studio</h2><div class="stats"><div class="stat" style="grid-column:span 2"><b id="saveGrand">$0.00</b><span>Total actually saved</span></div><div class="stat" style="grid-column:span 2"><b id="goalCount">0</b><span>Active goals</span></div></div>
@@ -57,10 +58,35 @@ button,input,select{font:inherit}button{border:0;border-radius:14px;padding:12px
 <div class="noh-tool-panel" id="nohTool12" hidden><button class="noh-tool-back" onclick="nohCloseTool()">← All tools</button><h2>🗓️ Daily spending diary</h2><p class="mini">Tap a day to see spending. Corrections and income are excluded.</p><input type="month" id="nohDiaryMonth" onchange="nohRenderAdvanced()"><div id="nohDiary"></div></div><div class="noh-tool-panel" id="nohTool13" hidden><button class="noh-tool-back" onclick="nohCloseTool()">← All tools</button><h2>🔍 Subscription review</h2><p class="mini">Recorded subscription expenses only. Nothing is automatically charged.</p><div id="nohSubscriptions"></div></div><div class="noh-tool-panel" id="nohTool14" hidden><button class="noh-tool-back" onclick="nohCloseTool()">← All tools</button><h2>📈 Financial health & trends</h2><div id="nohHealth"></div></div></section>
 </div>
 
-<nav class="nav"><button class="active" onclick="go('home',this)"><b>⌂</b>Home</button><button onclick="go('activity',this)"><b>≡</b>Activity</button><button onclick="go('savings',this)"><b>♡</b>Savings</button><button onclick="go('insights',this)"><b>✧</b>Insights</button><button onclick="go('more',this)"><b>•••</b>More</button></nav>
+<nav class="nav"><button class="active" onclick="go('home',this)"><b>⌂</b>Home</button><button onclick="go('savings',this)"><b>♡</b>Saving</button><button onclick="go('notes',this)"><b>📝</b>Notes</button><button onclick="go('activity',this)"><b>≡</b>Activity</button><button onclick="go('insights',this)"><b>✧</b>Insights</button><button onclick="go('more',this)"><b>•••</b>More</button></nav>
 
 <div id="goalModal" class="modal"><div class="sheet"><h2>Create Savings Goal</h2><span class="label">Goal type</span><select id="goalType" class="field"><option value="short">Short-term</option><option value="scheduled">Scheduled / long-term</option></select><input id="goalName" class="field" style="margin-top:9px" placeholder="Goal name"><input id="goalTarget" class="field" style="margin-top:9px" type="number" step="0.01" placeholder="Target amount (GYD)"><span class="label">Due date (optional for short-term)</span><input id="goalDate" class="field" type="date"><button class="primary full" style="margin-top:10px" onclick="createGoal()">Create Goal</button><button class="soft full" style="margin-top:7px" onclick="closeGoal()">Cancel</button></div></div>
 
+<script>
+const NOH_NOTES_KEY='noh-monthly-notes-v1';
+function nohGetNotes(){try{const v=JSON.parse(localStorage.getItem(NOH_NOTES_KEY)||'{}');return v&&typeof v==='object'&&!Array.isArray(v)?v:{}}catch(e){return {}}}
+function nohNoteMonth(){return document.getElementById('year').value+'-'+String(Number(document.getElementById('month').value)+1).padStart(2,'0')}
+function nohNoteEmoji(v){return /internet|wifi|gtt|digicel|data/i.test(v)?'🌐':/birthday|gift|party/i.test(v)?'🎂':/medicine|medication|tablet|pharmacy/i.test(v)?'💊':/food|meal|lunch|breakfast|grocery/i.test(v)?'🍽️':/taxi|bus|transport|car/i.test(v)?'🚕':/shopping|clothes|shoes|buy/i.test(v)?'🛍️':/house|mom|family|rent/i.test(v)?'🏠':/save|saving/i.test(v)?'💰':'📝'}
+function nohNoteSafe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function nohSaveNotes(v){try{localStorage.setItem(NOH_NOTES_KEY,JSON.stringify(v));return true}catch(e){alert('Notes could not be saved. Please export a backup and check storage space.');return false}}
+function nohAddNote(){const name=document.getElementById('noteName').value.trim(),raw=document.getElementById('noteAmount').value,amt=raw.trim()===''?0:Number(raw);if(!name||!Number.isFinite(amt)||amt<0)return alert('Enter a note and an optional valid amount.');const data=nohGetNotes(),key=nohNoteMonth();(data[key]||(data[key]=[])).push({id:'n'+Date.now().toString(36)+Math.random().toString(36).slice(2),name,amount:Math.round(amt*100)/100,done:false});if(nohSaveNotes(data)){document.getElementById('noteName').value='';document.getElementById('noteAmount').value='';nohRenderNotes()}}
+function nohToggleNote(id){const d=nohGetNotes(),k=nohNoteMonth();d[k]=(d[k]||[]).map(x=>x.id===id?{...x,done:!x.done}:x);if(nohSaveNotes(d))nohRenderNotes()}
+function nohDeleteNote(id){if(!confirm('Delete this note?'))return;const d=nohGetNotes(),k=nohNoteMonth();d[k]=(d[k]||[]).filter(x=>x.id!==id);if(nohSaveNotes(d))nohRenderNotes()}
+function nohEditNote(id){const d=nohGetNotes(),k=nohNoteMonth(),item=(d[k]||[]).find(x=>x.id===id);if(!item)return;const name=prompt('Edit note',item.name);if(name===null)return;if(!name.trim())return alert('Note cannot be empty.');const raw=prompt('Edit planned amount (GYD)',String(item.amount||0));if(raw===null)return;const amt=Number(raw);if(!Number.isFinite(amt)||amt<0)return alert('Enter a valid amount.');item.name=name.trim();item.amount=Math.round(amt*100)/100;if(nohSaveNotes(d))nohRenderNotes()}
+function nohRenderNotes(){
+ const el=document.getElementById('noteList');if(!el)return;
+ const items=nohGetNotes()[nohNoteMonth()]||[];
+ const total=items.reduce((a,x)=>a+Number(x.amount||0),0);
+ const remaining=items.filter(x=>!x.done).reduce((a,x)=>a+Number(x.amount||0),0);
+ const fmt=n=>Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+ document.getElementById('noteTotal').textContent='GYD '+fmt(total);
+ document.getElementById('noteRemaining').textContent='GYD '+fmt(remaining);
+ el.innerHTML=items.length?items.map(x=>`<div class="row"><div style="flex:1;min-width:0"><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" data-note-id="${x.id}" ${x.done?'checked':''}><span style="overflow-wrap:anywhere;${x.done?'text-decoration:line-through;opacity:.6':''}">${nohNoteEmoji(x.name)} ${nohNoteSafe(x.name)}</span></label><div class="meta">GYD ${fmt(x.amount)}</div><button class="soft tiny" data-note-edit="${x.id}">Edit</button> <button class="danger tiny" data-note-delete="${x.id}">Delete</button></div></div>`).join(''):'<p class="mini">No notes for this month yet.</p>';
+ el.querySelectorAll('[data-note-id]').forEach(x=>x.addEventListener('change',()=>nohToggleNote(x.dataset.noteId)));
+ el.querySelectorAll('[data-note-edit]').forEach(x=>x.addEventListener('click',()=>nohEditNote(x.dataset.noteEdit)));
+ el.querySelectorAll('[data-note-delete]').forEach(x=>x.addEventListener('click',()=>nohDeleteNote(x.dataset.noteDelete)));
+}
+</script>
 <script>
 const KEY='noh-budget-data-v3',SETKEY='noh-budget-v5-settings';
 const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -101,7 +127,7 @@ function isAdjustment(t){return !!t.adjustment||t.sub==='Balance Adjustment'}
 function isExtraIncome(t){return Number(t.amount)>0&&!isAdjustment(t)&&(t.cat==='Extra'||/^extra?$/i.test(String(t.desc||'').trim()))}
 function totals(q){q=norm(q);let spend=q.tx.filter(t=>txAmount(t)<0&&!isAdjustment(t)).reduce((a,t)=>a-txAmount(t),0),recv=q.tx.filter(t=>txAmount(t)>0&&!isAdjustment(t)).reduce((a,t)=>a+txAmount(t),0),extraTx=q.tx.filter(isExtraIncome).reduce((a,t)=>a+txAmount(t),0),legacyExtra=q.extras.reduce((a,e)=>a+Number(e.amount||0),0),adjust=q.tx.filter(isAdjustment).reduce((a,t)=>a+txAmount(t),0)+Number(q.balanceCorrection||0),ss=savingsStats(q);return{spend,recv,extra:extraTx+legacyExtra,saved:ss.saved,openingSaved:ss.openingSaved,newSaved:ss.contributed,adjust,in:q.openingBalance+q.salary+q.overtime+recv+legacyExtra,left:q.openingBalance+q.salary+q.overtime+recv+legacyExtra-spend-ss.contributed+adjust}}
 function stamp(t){let d=new Date(t);return d.toLocaleDateString([], {month:'short',day:'numeric',year:'numeric'})+' • '+d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}
-function go(id,b){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render()}
+function go(id,b){if(id==='notes')nohRenderNotes();document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render()}
 function setMode(v){mode=v;spendTab.className=v==='spend'?'primary':'soft';receiveTab.className=v==='receive'?'primary':'soft';recordBtn.textContent=v==='spend'?'Record spending':'Record extra income';recordBtn.className=(v==='spend'?'primary':'soft')+' full';document.getElementById('nohIncomeKind').style.display=v==='receive'?'block':'none'}
 function updateSubs(){subcat.innerHTML=(subs[category.value]||['General']).map(x=>`<option>${x}</option>`).join('')}
 function assertEditable(){if(current().closed){alert('This month was confirmed and rolled forward. It is now read-only.');return false}return true}
@@ -121,7 +147,7 @@ function confirmRollover(){let q=current();if(q.closed)return alert('This month 
 q.closed=true;q.closedAt=new Date().toISOString();q.rolledTo=dest;
 let n=db[dest]?norm(db[dest]):fresh();n.openingBalance=t.left;n.openingFrom=k();if(!n.goals.length)n.goals=q.goals.map(g=>({...g,id:uid(),saved:Number(g.saved||0),openingSaved:Number(g.saved||0)}));n.salary=0;n.overtime=0;db[dest]=n;save();alert('Rolled forward successfully. '+months[m]+' is now read-only.');render()}
 function editQuick(i){let q=settings.quick[i],v=prompt(q.name+' default amount',q.amount.toFixed(2));if(v===null)return;q.amount=Math.max(0,Number(v)||0);saveSettings();render()}
-function exportBackup(){let payload={app:'N•O•H Budget Tracker',backupFormat:3,storageKey:KEY,createdAt:new Date().toISOString(),data:db,settings,studio:typeof studio!=='undefined'?studio:null};let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),a=document.createElement('a'),d=new Date();a.href=URL.createObjectURL(blob);a.download=`NOH_Budget_Backup_${d.toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);localStorage.setItem('noh-last-backup',new Date().toISOString());render()}
+function exportBackup(){let payload={app:'N•O•H Budget Tracker',backupFormat:3,storageKey:KEY,createdAt:new Date().toISOString(),data:db,settings,studio:typeof studio!=='undefined'?studio:null,notes:nohGetNotes()};let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),a=document.createElement('a'),d=new Date();a.href=URL.createObjectURL(blob);a.download=`NOH_Budget_Backup_${d.toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);localStorage.setItem('noh-last-backup',new Date().toISOString());render()}
 function restoreBackup(ev){
   let f=ev.target.files&&ev.target.files[0];
   ev.target.value='';
@@ -169,6 +195,7 @@ function restoreBackup(ev){
       db=incoming;
       if(incomingSettings && typeof incomingSettings==='object')settings=incomingSettings;
       if(p.studio && typeof p.studio==='object'){localStorage.setItem('noh-studio-v1',JSON.stringify(p.studio));}
+      if(p.notes && typeof p.notes==='object' && !Array.isArray(p.notes)){localStorage.setItem('noh-monthly-notes-v1',JSON.stringify(p.notes));}
       save();
       saveSettings();
       localStorage.setItem('noh-last-backup',new Date().toISOString());
@@ -204,7 +231,7 @@ function completeGoal(id){if(!assertEditable())return;let g=current().goals.find
 function repeatGoal(id){if(!assertEditable())return;let g=current().goals.find(x=>x.id===id);if(!g||!g.due)return;let d=new Date(g.due+'T12:00:00');d.setFullYear(d.getFullYear()+1);g.due=d.toISOString().slice(0,10);g.completed=false;save();render()}
 function renderGoals(list,type){let gs=current().goals.filter(g=>(g.type||'short')===type);list.innerHTML=gs.length?gs.map(g=>{let p=g.target?Math.min(100,g.saved/g.target*100):0,sug=suggested(g);return `<div class="row"><div style="flex:1"><b>${g.name}</b><div class="meta">$${money(g.saved)} saved${g.target?' of $'+money(g.target):''}${g.due?' • due '+new Date(g.due+'T12:00:00').toLocaleDateString([], {month:'short',day:'numeric',year:'numeric'}):''}</div>${type==='scheduled'?`<div class="meta">Suggested monthly: <b>$${money(sug)}</b> — you choose what to actually add.</div>`:''}<div class="progress"><div class="bar" style="width:${p}%"></div></div><button class="primary tiny" onclick="contribute('${g.id}')">+ Save</button> <button class="soft tiny" onclick="editGoal('${g.id}')">Edit</button> <button class="soft tiny" onclick="spendGoal('${g.id}')">Spend</button> <button class="soft tiny" onclick="withdrawGoal('${g.id}')">Withdraw</button> <button class="soft tiny" onclick="completeGoal('${g.id}')">${g.completed?'Reopen':'Complete'}</button> ${g.due?`<button class="soft tiny" onclick="repeatGoal('${g.id}')">Next year</button>`:''} <button class="danger tiny" onclick="deleteGoal('${g.id}')">Delete</button></div></div>`}).join(''):'<div class="meta">No goals here yet.</div>'}
 function render(){
-let q=current(),t=totals(q);heroMonth.textContent=months[m]+' '+y+(q.closed?' • CONFIRMED':'');balance.textContent='$'+money(t.left);moneyIn.textContent='$'+money(t.in);moneyOut.textContent='$'+money(t.spend);extra.textContent='$'+money(t.extra);savedTotal.textContent='$'+money(t.saved);saveGrand.textContent='$'+money(t.saved);goalCount.textContent=q.goals.length;
+nohRenderNotes();let q=current(),t=totals(q);heroMonth.textContent=months[m]+' '+y+(q.closed?' • CONFIRMED':'');balance.textContent='$'+money(t.left);moneyIn.textContent='$'+money(t.in);moneyOut.textContent='$'+money(t.spend);extra.textContent='$'+money(t.extra);savedTotal.textContent='$'+money(t.saved);saveGrand.textContent='$'+money(t.saved);goalCount.textContent=q.goals.length;
 rollNote.innerHTML=q.openingFrom?`<b>↪ Money Rolled Over</b><br>$${money(q.openingBalance)} from ${q.openingFrom}<br><span class="meta">Savings carried forward: $${money(t.openingSaved)}</span>`:`<b>↪ Money Rolled Over</b><br>$0.00 — this month has no confirmed rollover.${t.openingSaved>0?`<br><span class="meta">Savings carried forward: $${money(t.openingSaved)}</span>`:''}`;
 
 quickEdit.innerHTML=settings.quick.map((x,i)=>`<div class="row"><div><b>${nohEscape(x.name)}</b><div class="meta">${nohEscape(x.cat)}</div></div><div><span class="money">$${money(x.amount)}</span> <button class="primary tiny" onclick="quickPay(${i})">Pay</button> <button class="soft tiny" onclick="editQuick(${i})">Edit</button> <button class="soft tiny" onclick="nohDeleteQuick(${i})">Delete</button></div></div>`).join('');
@@ -322,4 +349,4 @@ nohRenderStudio();nohRenderUltimate();nohRenderAdvanced();if(studio.hidden)docum
 // Keep studio views current when navigating the existing app.
 const nohOriginalRender=render;render=function(){nohOriginalRender();nohRenderStudio();nohRenderUltimate();nohRenderAdvanced();if(studio.hidden)document.querySelectorAll('#balance,#moneyIn,#moneyOut,#extra,#savedTotal,#saveGrand').forEach(x=>x.classList.add('private'))};
 </script>
-<div id="nohReleaseTag" style="position:fixed;bottom:4px;right:8px;z-index:2;font-size:10px;opacity:.65;pointer-events:none">N•O•H update 5.6</div></body></html>
+<div id="nohReleaseTag" style="position:fixed;bottom:4px;right:8px;z-index:2;font-size:10px;opacity:.65;pointer-events:none">N•O•H update 5.10</div></body></html>
